@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yenifer Daza — Project Coordination · Product Development · Operations &amp; Process Improvement</title>
+  <meta name="description" content="Portfolio of Yenifer Daza. Cross-functional coordination across product development, design, manufacturing and operations — from needs and requirements through execution, delivery and continuous improvement.">
+  <meta name="author" content="Yenifer Daza">
+  <meta name="theme-color" content="#FAF7F4">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Yenifer Daza — Project Coordination · Product Development · Operations &amp; Process Improvement">
+  <meta property="og:description" content="Five case studies across product development, interior fit-out, process improvement, business analysis and quality.">
+  <meta property="og:locale" content="en_CA">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300..600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- PHASE 1 ONLY — remove this bar in Phase 2 -->
+  <div class="pilot-bar">
+    <div class="container pilot-bar__inner">
+      <span class="pilot-bar__tag">Pilot</span>
+      <p class="pilot-bar__text">Visual preview. Imagery is placeholder stock photography and copy is a working draft — figures and project details are pending verification.</p>
+      <button class="pilot-bar__close" type="button" aria-label="Dismiss preview notice">&times;</button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="wordmark" href="#top" aria-label="Yenifer Daza — home">Yenifer <span>Daza</span></a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="#work">Work</a>
+        <a class="nav__link" href="#process">How I Work</a>
+        <a class="nav__link" href="#about">About</a>
+        <a class="nav__link" href="#contact">Contact</a>
+      </nav>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="mobile-nav" aria-hidden="true">
+    <nav aria-label="Mobile">
+      <ul class="nav-overlay__list">
+        <li><a class="nav-overlay__link" href="#work">Work</a></li>
+        <li><a class="nav-overlay__link" href="#process">How I Work</a></li>
+        <li><a class="nav-overlay__link" href="#about">About</a></li>
+        <li><a class="nav-overlay__link" href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <p class="nav-overlay__meta">Project Coordination · Product Design &amp; Development</p>
+  </div>
+
+  <main id="main">
+
+    <!-- ===== 01 · Hero — type only, no imagery (see UX note: avoid designer mis-categorisation) ===== -->
+    <section class="hero" id="top">
+      <div class="container hero__inner">
+
+        <!-- CONFIRM: city — currently generic -->
+        <p class="hero__eyebrow">Based in Canada <span aria-hidden="true">·</span> Open to opportunities</p>
+
+        <!-- The hero signature is the owner-supplied asset, used as delivered: it carries the
+             name, the brushstroke and the descriptor line as one image. Nothing in it is
+             reproduced in HTML, CSS, SVG or a web font. Only its maximum width and the vertical
+             space around it are set, in .hero__signature. The alt text is the accessible
+             equivalent of the words inside the image, not a re-rendering of them. -->
+        <h1 class="hero__signature">
+          <img src="assets/img/yenifer-daza-signature.png"
+               alt="Yenifer Daza — Project Coordinator · Product Design &amp; Development"
+               width="2170" height="725" decoding="async" fetchpriority="high">
+        </h1>
+
+        <p class="hero__lede">
+          I coordinate work from requirements to delivery — turning needs into plans, aligning
+          stakeholders, suppliers and priorities, and moving projects through execution, completion
+          and improvement.
+        </p>
+
+        <p class="hero__note">
+          Hands-on professional experience across product development, design, production and operations.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#work">Projects <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+          <a class="btn btn--ghost" href="#contact">Get in touch</a>
+        </div>
+
+      </div>
+
+      <a class="hero__scroll" href="#work" aria-label="Scroll to the work">
+        <span aria-hidden="true">&darr;</span>
+      </a>
+    </section>
+
+    <!-- ===== 02 · Selected work — a numbered contents list, not a gallery ===== -->
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="container">
+
+        <!-- The anchor focus sits on this wrapper, not on the map: clicking Work must land
+             the whole opening of the section — kicker, circle and status bar — in one view. -->
+        <div class="work__lead" data-anchor-focus>
+
+          <div class="section__head section__head--wide reveal">
+            <span class="section__kicker section__kicker--lg">Selected work</span>
+            <p class="section__lede section__lede--quiet">
+              Project coordination applied across products, operations, processes and business growth.
+            </p>
+          </div>
+
+          <!-- Work map — one dominant centre and four independent applications around it.
+               NOT a cycle, sequence or process: the four areas are siblings, each a real link,
+               and nothing implies an order between them. Hover or focus previews the area
+               against the list below; a click opens that area's featured project.
+
+               Geometry. The drawing is unchanged since round 17; round 18 only cropped the
+               frame to the ink, so the viewBox is now 51 9 1018 622 — same marks, no dead
+               margin — and the stage carries that ratio, so every percentage below still lands
+               on its SVG point at any width:
+                 centre (560,320) — hub r190, ring r212, four gold arcs on the ring
+                 area circles r130 at (195,148) (925,148) (925,492) (195,492)
+                 403.5 between centres, so the areas clear the ring by ~61 units and the
+                 connectors live in that gap. The centre is deliberately the larger
+                 mass — 380 across against 260, a ratio of 1.46 — so it reads as dominant,
+                 and it is sized so "Coordination" sits inside it with even air on both
+                 sides at every stage width (the centre type scales with the stage, in cqw).
+               The layered veils and hairlines behind everything are what give the composition
+               its depth; they are decorative and carry no meaning. -->
+          <div class="workmap reveal">
+            <div class="workmap__stage">
+              <svg class="workmap__lines" viewBox="51 9 1018 622" aria-hidden="true" focusable="false">
+                <!-- depth: soft overlapping veils, then hairline outlines -->
+                <circle class="wm-veil wm-veil--wide" cx="560" cy="322" r="306"/>
+                <circle class="wm-veil" cx="392" cy="238" r="228"/>
+                <circle class="wm-veil" cx="734" cy="410" r="214"/>
+                <circle class="wm-hair" cx="560" cy="320" r="286"/>
+                <circle class="wm-hair" cx="418" cy="292" r="216"/>
+                <circle class="wm-hair" cx="704" cy="352" r="216"/>
+
+                <!-- the connectors sit under the centre and the areas -->
+                <path class="wm-line" data-line="product"    d="M360.99 226.22 L318.93 206.40"/>
+                <path class="wm-line" data-line="production" d="M759.01 226.22 L801.07 206.40"/>
+                <path class="wm-line" data-line="process"    d="M759.01 413.78 L801.07 433.60"/>
+                <path class="wm-line" data-line="business"   d="M360.99 413.78 L318.93 433.60"/>
+
+                <!-- the centre: a light disc, air, then the ring -->
+                <circle class="wm-hub"  cx="560" cy="320" r="190"/>
+                <circle class="wm-ring" cx="560" cy="320" r="212"/>
+
+                <!-- the four gold arcs on that ring, one per area, kept from the current design -->
+                <path class="wm-arc" data-arc="product"    d="M348.34 308.05 A212 212 0 0 1 416.04 164.37"/>
+                <path class="wm-arc" data-arc="production" d="M703.96 164.37 A212 212 0 0 1 771.66 308.05"/>
+                <path class="wm-arc" data-arc="process"    d="M771.66 331.95 A212 212 0 0 1 703.96 475.63"/>
+                <path class="wm-arc" data-arc="business"   d="M416.04 475.63 A212 212 0 0 1 348.34 331.95"/>
+
+                <!-- a finer arc hugging the outer edge of each area circle -->
+                <path class="wm-edge" data-arc="product"    d="M67.75 201.41 A138 138 0 0 1 155.19 15.87"/>
+                <path class="wm-edge" data-arc="production" d="M964.81 15.87 A138 138 0 0 1 1052.25 201.41"/>
+                <path class="wm-edge" data-arc="process"    d="M1052.25 438.59 A138 138 0 0 1 964.81 624.13"/>
+                <path class="wm-edge" data-arc="business"   d="M155.19 624.13 A138 138 0 0 1 67.75 438.59"/>
+              </svg>
+
+              <div class="workmap__core">
+                <h2 class="workmap__core-title" id="work-title">Project<br>Coordination</h2>
+                <p class="workmap__core-sub">Cross-functional coordination</p>
+              </div>
+
+              <a class="wmnode wmnode--product" href="areas/product-design-development.html"
+                 data-area="product" data-label="Product Design &amp; Development"
+                 aria-label="Product Design and Development — explore the projects that evidence this capability.">
+                <span class="wmnode__text">
+                  <span class="wmnode__name">Product Design &amp; Development</span>
+                  <span class="wmnode__go">Explore the work <span aria-hidden="true">&rarr;</span></span>
+                </span>
+                <span class="wmnode__disc" aria-hidden="true"></span>
+              </a>
+
+              <a class="wmnode wmnode--production" href="areas/production-operations.html"
+                 data-area="production" data-label="Production &amp; Operations"
+                 aria-label="Production and Operations — explore the projects that evidence this capability.">
+                <span class="wmnode__disc" aria-hidden="true"></span>
+                <span class="wmnode__text">
+                  <span class="wmnode__name">Production &amp; Operations</span>
+                  <span class="wmnode__go">Explore the work <span aria-hidden="true">&rarr;</span></span>
+                </span>
+              </a>
+
+              <a class="wmnode wmnode--process" href="areas/process-improvement.html"
+                 data-area="process" data-label="Process Improvement"
+                 aria-label="Process Improvement — explore the projects that evidence this capability.">
+                <span class="wmnode__disc" aria-hidden="true"></span>
+                <span class="wmnode__text">
+                  <span class="wmnode__name">Process Improvement</span>
+                  <span class="wmnode__go">Explore the work <span aria-hidden="true">&rarr;</span></span>
+                </span>
+              </a>
+
+              <a class="wmnode wmnode--business" href="areas/business-growth.html"
+                 data-area="business" data-label="Business Growth &amp; Market Development"
+                 aria-label="Business Growth and Market Development — explore the projects that evidence this capability.">
+                <span class="wmnode__text">
+                  <span class="wmnode__name">Business Growth &amp; Market Development</span>
+                  <span class="wmnode__go">Explore the work <span aria-hidden="true">&rarr;</span></span>
+                </span>
+                <span class="wmnode__disc" aria-hidden="true"></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Filter status, and the way into the full list. It reads the area under the
+               cursor or keyboard focus, and a click always scrolls down to every project.
+               `data-anchor-keep` marks it as the one element of this block that must never
+               land below the fold, whatever the viewport. -->
+          <a class="wstatus reveal" href="#worklist" data-anchor-keep
+             aria-label="See all projects — go to the full list">
+            <span class="wstatus__text" data-wm-status aria-live="polite">All projects</span>
+            <span class="wstatus__go" aria-hidden="true">&darr;</span>
+          </a>
+
+        </div>
+
+        <ol class="worklist" id="worklist">
+
+          <li class="wrow reveal" data-areas="product production process">
+            <span class="wrow__num" aria-hidden="true">01</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Product Development</span>
+              <h3 class="wrow__title">
+                <a href="projects/product-line-documentation.html">
+                  Multiple product lines coordinated from design intent to fabrication
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Researched a compact-housing market and set the product direction that came out of it, then developed a multi-line furniture catalogue to one standard — 3D models, renders, manuals, packaging and fabrication drawings — and trained a junior designer who took over its highest-volume element.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                A catalogue kept in production and documented to one standard, with the handover holding after I relocated and continued coordinating remotely.
+              </p>
+              <a class="wrow__link" href="projects/product-line-documentation.html">View case <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Furniture from a developed product collection">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="production product business">
+            <span class="wrow__num" aria-hidden="true">02</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Project Coordination</span>
+              <h3 class="wrow__title">
+                <a href="projects/custom-fit-out-service.html">
+                  A custom fit-out service line, built from nothing and then run across 38 client projects
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Set the service up, then coordinated each project from site measurement through design and supplier and installer scheduling to installed handover.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Thirty-eight client projects delivered, with a photographic record of installed work.
+              </p>
+              <a class="wrow__link" href="projects/custom-fit-out-service.html">View case <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Completed interior fit-out of a residential space">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="process product production">
+            <span class="wrow__num" aria-hidden="true">03</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Process Improvement</span>
+              <h3 class="wrow__title">
+                <a href="projects/footwear-product-redesign.html">
+                  A footwear manufacturer’s product redesigned for direct injection
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Redesigned product and patterns for direct-injection construction, wrote the technical and process specifications, trained the production teams on them, ran pilot lots into series production, and developed a new women’s safety-footwear line.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Specifications in force carrying version numbers and effective dates, a new product line developed, and stage-by-stage non-conformance control operating on the floor.
+              </p>
+              <a class="wrow__link" href="projects/footwear-product-redesign.html">View case <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1601058268499-e52658b8bb88?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Operator working on a footwear production line">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="business product production">
+            <span class="wrow__num" aria-hidden="true">04</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Business &amp; Market Development</span>
+              <h3 class="wrow__title">
+                <a href="projects/brand-to-manufacture.html">
+                  Brands taken from product idea to manufacture
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Contracted directly by brand owners to run product development and process support: requirements, sourcing, costed consumption, prototypes, delivery scheduling and pilot runs.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Products manufactured and shipped to schedule.
+              </p>
+              <a class="wrow__link" href="projects/brand-to-manufacture.html">View case <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Packed and labelled product ready for despatch">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="production process">
+            <span class="wrow__num" aria-hidden="true">05</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Operations &amp; Supply</span>
+              <h3 class="wrow__title">
+                <a href="projects/material-supply-coordination.html">
+                  Material supply for a made-to-order workshop
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Ran material ordering and supplier coordination end to end for thirteen consecutive months, and produced the cutting specifications and the optimisation in-house.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Thirteen consecutive months documented without a gap, and the function left as artifacts — a supplier database, a labelling system and a process model.
+              </p>
+              <a class="wrow__link wrow__link--overview" href="projects/material-supply-coordination.html">
+                View project <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Warehouse racking holding boards ready for the workshop">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="business product">
+            <span class="wrow__num" aria-hidden="true">06</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Costing &amp; Pricing</span>
+              <h3 class="wrow__title">
+                <a href="projects/product-costing-channel-pricing.html">
+                  One manufacturing cost, five channel prices
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Built the cost models behind the product range and the pricing structure that carried a single manufacturing cost into each sales channel.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                A costing and pricing structure applied across the range — the same work I had done six years earlier in footwear.
+              </p>
+              <a class="wrow__link wrow__link--overview" href="projects/product-costing-channel-pricing.html">View project <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&amp;fit=crop&amp;w=700&amp;q=75"
+                   width="800" height="450" loading="lazy"
+                   alt="Cost and pricing documents laid out on a desk">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="process production">
+            <span class="wrow__num" aria-hidden="true">07</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Process Design</span>
+              <h3 class="wrow__title">
+                Core processes modelled, standardised and given a way to be measured
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Modelled the order, inventory and production processes, wrote version-controlled standard procedures for fabrication, box making and packing, and proposed a defects-per-unit inspection format.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Version-controlled procedures in use across the workshop.
+              </p>
+              
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Warehouse aisles holding stock under an inventory process">
+            </figure>
+          </li>
+
+          <li class="wrow reveal" data-areas="business">
+            <span class="wrow__num" aria-hidden="true">08</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Channel Development</span>
+              <h3 class="wrow__title">
+                <a href="projects/channel-development.html">
+                  From a single sales route to several, including a B2B channel developed from scratch
+                </a>
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Opened and coordinated additional sales channels and built the pricing scenarios behind each one.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Multiple channels operating in parallel. <!-- VERIFY -->
+              </p>
+              <a class="wrow__link wrow__link--overview" href="projects/channel-development.html">View project <span class="btn__arrow" aria-hidden="true">&rarr;</span></a>
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Product photography prepared for an online sales channel">
+            </figure>
+          </li>
+
+          <li class="wrow wrow--compact reveal" data-areas="product production">
+            <span class="wrow__num" aria-hidden="true">09</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Technical Product Design</span>
+              <h3 class="wrow__title">
+                A tactical boot carried from colourway to production pattern
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Developed the model and its colourways, drew the production patterns with per-piece cut quantities, and measured production times against costing assumptions.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                The product was manufactured and branded.
+              </p>
+              
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Pattern pieces laid out on a cutting table">
+            </figure>
+          </li>
+
+          <li class="wrow wrow--compact reveal" data-areas="product">
+            <span class="wrow__num" aria-hidden="true">10</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Early-stage Development</span>
+              <h3 class="wrow__title">
+                A geodesic dome taken through early-stage development
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Worked the concept, its geometry and its construction logic.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Early-stage development. Not commercialised.
+              </p>
+              
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Structure under construction on site">
+            </figure>
+          </li>
+
+          <li class="wrow wrow--compact reveal" data-areas="process business">
+            <span class="wrow__num" aria-hidden="true">11</span>
+            <div class="wrow__body">
+              <span class="wrow__label">Data &amp; Reporting</span>
+              <h3 class="wrow__title">
+                Sales and operations data turned into something a decision could be made from
+              </h3>
+              <p class="wrow__did">
+                <span>What I did</span>
+                Tracked and analysed sales, inventory, fabrication and cash data, and prepared the figures behind ordering, range and channel decisions.
+              </p>
+              <p class="wrow__out">
+                <span>Outcome</span>
+                Inventory, promotion and phase-out decisions taken against a consistent set of figures.
+              </p>
+              
+            </div>
+            <figure class="wrow__media">
+              <!-- PILOT IMAGE -->
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=800&amp;q=72"
+                   width="800" height="450" loading="lazy"
+                   alt="Operations reporting on screen">
+            </figure>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== 03 · How I work — the method (the work map above covers where it is applied) ===== -->
+    <section class="section section--alt section--fit" id="process" aria-labelledby="process-title">
+      <div class="container">
+
+        <div class="section__head section__head--wide reveal">
+          <span class="section__kicker">How I work</span>
+          <h2 class="section__title" id="process-title">Understand, plan, coordinate, execute, improve.</h2>
+          <p class="section__lede">
+            A hands-on approach to moving work from requirements through execution, delivery and
+            continuous improvement.
+          </p>
+        </div>
+
+        <ol class="flow">
+
+          <li class="flow__step reveal">
+            <span class="flow__mark" aria-hidden="true"></span>
+            <span class="flow__num">01</span>
+            <h3 class="flow__title">Understand</h3>
+            <p class="flow__desc">Clarify the need, context, requirements and desired outcome.</p>
+          </li>
+
+          <li class="flow__step reveal">
+            <span class="flow__mark" aria-hidden="true"></span>
+            <span class="flow__num">02</span>
+            <h3 class="flow__title">Plan</h3>
+            <p class="flow__desc">Translate requirements into priorities, activities, resources, timelines and deliverables.</p>
+          </li>
+
+          <li class="flow__step flow__step--key reveal">
+            <span class="flow__mark" aria-hidden="true"></span>
+            <span class="flow__num">03</span>
+            <h3 class="flow__title">Coordinate</h3>
+            <p class="flow__desc">Connect people, information, suppliers and dependencies to keep work moving.</p>
+          </li>
+
+          <li class="flow__step reveal">
+            <span class="flow__mark" aria-hidden="true"></span>
+            <span class="flow__num">04</span>
+            <h3 class="flow__title">Execute</h3>
+            <p class="flow__desc">Support implementation, solve issues and move work through delivery.</p>
+          </li>
+
+          <li class="flow__step reveal">
+            <span class="flow__mark" aria-hidden="true"></span>
+            <span class="flow__num">05</span>
+            <h3 class="flow__title">Improve</h3>
+            <p class="flow__desc">Evaluate outcomes, identify opportunities and improve the process for future execution.</p>
+          </li>
+
+        </ol>
+
+        <div class="flow__loop reveal">
+          <svg class="flow__loop-path" viewBox="0 0 1000 54" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M994 0 L994 34 Q994 48 980 48 L20 48 Q6 48 6 34 L6 0"/>
+            <!-- the same path again, carrying one short bright dash that travels it: the
+                 return leg is the point of this graphic, so it should read as alive
+                 rather than as a static rule. Decorative only — the svg is aria-hidden. -->
+            <path class="flow__loop-spark" d="M994 0 L994 34 Q994 48 980 48 L20 48 Q6 48 6 34 L6 0"/>
+            <path d="M1 12 L6 1 L11 12"/>
+          </svg>
+          <p class="flow__loop-note">
+            Not always linear &mdash; insights from <strong>Improve</strong> feed the next cycle of
+            <strong>Understand</strong> and <strong>Plan</strong>.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 04 · About — sized to fit one screen; tools merged in, never a logo wall ===== -->
+    <section class="section section--fit" id="about" aria-labelledby="about-title">
+
+      <!-- The anchor focus sits on this wrapper, which holds BOTH the composition and
+           the Applied Project Management band: clicking About must land everything from
+           the word ABOUT down to the end of that band, centred, in one screen. The
+           section's own padding stays outside the wrapper so it is not counted against
+           the viewport. Everything added inside here has to be paid for in height — the
+           budget is viewport minus 93px. See CLAUDE.md §0-A. -->
+      <div class="about-focus" data-anchor-focus>
+      <div class="container">
+
+        <div class="about-composition">
+
+          <div class="section__head section__head--wide reveal">
+            <span class="section__kicker">About</span>
+            <h2 class="section__title" id="about-title">Coordination is the thread through all of it.</h2>
+          </div>
+
+          <div class="about">
+
+            <div class="about__side reveal">
+              <figure class="about__media">
+                <!-- PILOT IMAGE — replace with Yenifer's photograph in Phase 2 -->
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&amp;fit=crop&amp;w=700&amp;q=75"
+                     width="700" height="875" loading="lazy" alt="Portrait of Yenifer Daza">
+              </figure>
+
+              <p class="langs">
+                <span class="langs__label">Languages</span>
+                <span class="langs__value">English <span aria-hidden="true">·</span> Spanish</span>
+              </p>
+            </div>
+
+            <div class="about__body reveal">
+              <p>
+                My experience has always lived at the intersection of ideas and execution. I've developed
+                products, coordinated projects, worked with suppliers and production teams, built new ways
+                of working, and helped turn customer and business needs into something that could actually
+                be delivered.
+              </p>
+              <p>
+                That experience comes from building my own business, consulting for others, and working in
+                operations — different environments that taught me how to organize work, solve problems and
+                collaborate with people with very different priorities.
+              </p>
+              <p>
+                Now in Canada, I'm building the next stage of my career through coordinator-level roles
+                where I can contribute that experience, keep learning, and grow within a new professional
+                market.
+              </p>
+            </div>
+
+            <!-- Selected impact — the third column of the same composition, not a section of
+                 its own: serif figures, quiet captions, no card, no icon, no chart. The three
+                 figures were supplied by the owner in session 5 and are still pending
+                 verification against source records (CLAUDE.md §3). -->
+            <div class="impact reveal">
+              <span class="impact__title">Selected impact</span>
+              <ul class="impact__list">
+                <li class="impact__item">
+                  <span class="impact__figure">38</span>
+                  <span class="impact__caption">Client fit-out projects delivered</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- Tools — grouped by what they support, never a logo wall and never a rating bar.
+               The band runs the full width of the container so the four groups read across
+               rather than down; the column widths are uneven on purpose, sized to the content
+               so no group is squeezed into a narrow ragged stack. -->
+          <div class="tools reveal">
+            <h3 class="tools__title">Tools</h3>
+            <ul class="toolgroups">
+              <li class="toolgroup">
+                <span class="toolgroup__label">Project Coordination &amp; Collaboration</span>
+                <p class="toolgroup__list">Asana · Monday.com · Miro</p>
+                <p class="toolgroup__desc">Project planning · documentation · stakeholder coordination · Agile/Scrum fundamentals</p>
+              </li>
+              <li class="toolgroup">
+                <span class="toolgroup__label">Analysis &amp; Reporting</span>
+                <p class="toolgroup__list">Excel <em>(Advanced)</em> · PowerPoint <em>(Advanced)</em></p>
+                <p class="toolgroup__desc">Data analysis · reporting · dashboards · performance tracking</p>
+              </li>
+              <li class="toolgroup">
+                <span class="toolgroup__label">Design &amp; Visualization</span>
+                <p class="toolgroup__list">Rhino <em>(Advanced)</em> · V-Ray · AutoCAD · SketchUp · Illustrator <em>(Advanced)</em> · Photoshop</p>
+                <p class="toolgroup__desc">3D modeling · technical documentation · design development · visual communication</p>
+              </li>
+              <li class="toolgroup">
+                <span class="toolgroup__label">AI &amp; Productivity</span>
+                <p class="toolgroup__list">Generative AI tools</p>
+                <p class="toolgroup__desc">Research · information synthesis · workflow development · documentation</p>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Applied Project Management — a secondary band, deliberately outside
+           .about-composition. Two reasons: the composition is the anchor target, so
+           clicking About must still land the portrait, the narrative, the impact
+           figures and the tools band together (CLAUDE.md §0-A), and the hierarchy is
+           Selected Work first, applied coursework second. It reads as part of About
+           through position and a very slight paper shift, not through a card. -->
+      <aside class="applied" aria-labelledby="applied-title">
+        <div class="container applied__inner">
+
+          <span class="applied__icon" aria-hidden="true">
+            <svg viewBox="0 0 40 44" fill="none" stroke="currentColor" stroke-width="1.4"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1.5" y="1.5" width="30" height="35" rx="2.5"/>
+              <path d="M8 10h17M8 16h17M8 22h11"/>
+              <circle cx="26.5" cy="31" r="6"/>
+              <path d="M22.5 35.5 21 42.5l5.5-3 5.5 3-1.5-7"/>
+            </svg>
+          </span>
+
+          <div class="applied__text">
+            <span class="applied__kicker">Applied Project Management</span>
+            <!-- CONFIRM: is the certificate completed, or in progress? The wording here
+                 states coursework, not a completed credential, which is the safe claim
+                 until she confirms. Do not upgrade it without her word (CLAUDE.md §3). -->
+            <h3 class="applied__title" id="applied-title">Google Project Management Professional Certificate</h3>
+            <p class="applied__desc">
+              Practical coursework in project planning <span aria-hidden="true">·</span> stakeholder coordination
+              <span aria-hidden="true">·</span> scheduling &amp; tracking <span aria-hidden="true">·</span> risk management
+              <span aria-hidden="true">·</span> Agile/Scrum
+            </p>
+          </div>
+
+          <a class="applied__cta" href="applied-project-management.html">
+            View applied work <span class="applied__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+
+        </div>
+      </aside>
+      </div>
+    </section>
+
+
+    <!-- ===== 05 · Contact — one action ===== -->
+    <section class="section section--dark" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="contact">
+          <div class="reveal">
+            <span class="section__kicker">Contact</span>
+            <h2 class="contact__title" id="contact-title">Let's talk about the role you are filling.</h2>
+            <p class="contact__lede">
+              If you are hiring for project coordination, product development, operations or process improvement,
+              I would be glad to walk you through the evidence behind any of these projects.
+            </p>
+            <!-- REPLACE in Phase 2 with Yenifer's real contact address -->
+            <a class="contact__mail" href="mailto:hello@yeniferdaza.com">hello@yeniferdaza.com</a>
+          </div>
+
+          <dl class="contact__list reveal">
+            <div class="contact__item">
+              <dt>LinkedIn</dt>
+              <!-- REPLACE in Phase 2 with the real profile URL -->
+              <dd><a href="https://www.linkedin.com/" rel="noopener">linkedin.com/in/yeniferdaza</a></dd>
+            </div>
+            <div class="contact__item">
+              <dt>Location</dt>
+              <!-- CONFIRM: city -->
+              <dd>Canada</dd>
+            </div>
+            <div class="contact__item">
+              <dt>CV</dt>
+              <dd>Available on request</dd>
+            </div>
+            <div class="contact__item">
+              <dt>Availability</dt>
+              <dd>Open to opportunities</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <span class="wordmark">Yenifer <span>Daza</span></span>
+      <p class="site-footer__note">
+        Project Coordination · Product Development · Operations &amp; Process Improvement.
+        Portfolio and case studies &copy; <span data-year>2026</span> Yenifer Daza.
+      </p>
+      <a href="#top">Back to top &uarr;</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

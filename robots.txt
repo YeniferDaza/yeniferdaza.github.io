@@ -1,0 +1,5 @@
+# PUBLISHED FOR TESTING — reachable by link, deliberately not indexed.
+# Consent for employer names, client names and commercial design assets
+# has not been granted. Do not index, do not archive.
+User-agent: *
+Disallow: /

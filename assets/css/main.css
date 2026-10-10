@@ -1,0 +1,3549 @@
+/* =============================================================
+   Yenifer Daza — Portfolio
+   Design system. See ARCHITECTURE.md §3 before editing.
+   ============================================================= */
+
+/* ===== Tokens ===== */
+:root {
+  /* Colour */
+  --paper: #FAF7F4;
+  --paper-alt: #F2F0EE;
+  /* The dark zone (Contact and the footer). It was a deep forest green — the only cool
+     colour in an otherwise entirely warm palette of cream, gold and tan, which is why it
+     read as borrowed. Round 24 moves it into the gold's own family: a deep bistre that
+     is still an accent, still the darkest surface on the site, and now a relative of
+     --accent rather than a stranger to it. */
+  --paper-deep: #231A12;
+  --ink: #0B1215;
+  --ink-soft: #4F5A56;
+  --ink-faint: #777777;
+  --line: #E3DED8;
+  --line-strong: #CFC9C1;
+  --accent: #A1854F;
+  --accent-hover: #866B3B;
+  --accent-tint: #F1EBDF;
+
+  /* Work map surfaces — four neutrals stepped out of the same paper family, used
+     only for the four area circles. No new hue is introduced: ink stays the type
+     colour and gold stays the accent. */
+  --wm-ivory: #FCFAF7;
+  --wm-mist:  #F1EEE9;
+  --wm-stone: #E5E1DA;
+  --wm-taupe: #DBD4C9;
+  /* Unused since round 2 and left only as history. Do NOT reintroduce --green-mid: the
+     dark zone is warm as of round 24 and a forest green would fight it. */
+  --green-mid: #15372C;
+  --tan: #9B775D;
+  --gold-on-dark: #C9AE78;
+  --on-dark: #FAF7F4;
+  --on-dark-soft: #B2A693;   /* warm, to match the new --paper-deep */
+
+  /* Type */
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-display: clamp(3rem, 9.5vw, 7rem);
+  --fs-h1: clamp(2.375rem, 5.6vw, 4rem);
+  --fs-h2: clamp(1.9rem, 4vw, 3rem);
+  --fs-h3: clamp(1.3125rem, 2vw, 1.6875rem);
+  --fs-lead: clamp(1.0625rem, 1.5vw, 1.3125rem);
+  --fs-body: 1.0625rem;
+  --fs-sm: 0.875rem;
+  --fs-label: 0.6875rem;
+
+  /* Space */
+  --space-3xs: .25rem;
+  --space-2xs: .5rem;
+  --space-xs: .75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  --section-y: clamp(4.5rem, 9vw, 8.5rem);
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --maxw: 1220px;
+  --header-h: 68px;
+
+  /* Shape + motion */
+  --r-sm: 3px;
+  --r-md: 10px;
+  --r-pill: 999px;
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --dur: 520ms;
+}
+
+/* ===== Reset ===== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 24px);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.72;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+body.is-locked { overflow: hidden; }
+
+img { max-width: 100%; height: auto; display: block; }
+svg { display: block; }
+figure { margin: 0; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.14;
+  margin: 0;
+  color: var(--ink);
+}
+
+p { margin: 0 0 var(--space-sm); }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+
+ul, ol { margin: 0; padding: 0; }
+li { list-style: none; }
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; top: -100px; left: var(--gutter); z-index: 200;
+  background: var(--ink); color: var(--on-dark);
+  padding: .75rem 1.25rem; border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+}
+.skip-link:focus { top: 12px; color: var(--on-dark); }
+
+/* ===== Layout primitives ===== */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section { padding-block: var(--section-y); position: relative; }
+.section--alt { background: var(--paper-alt); }
+.section--dark { background: var(--paper-deep); color: var(--on-dark); }
+.section--dark h1, .section--dark h2, .section--dark h3 { color: var(--on-dark); }
+.section--tight { padding-block: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1rem, 2vw, 1.5rem); }
+
+/* --fit: sized so the whole section reads in one viewport at ~800px tall */
+.section--fit { padding-block: clamp(2.25rem, 4vw, 3.5rem); }
+.section--fit .section__head { margin-bottom: clamp(1.125rem, 2.2vw, 1.75rem); }
+.section--fit .section__title { font-size: clamp(1.625rem, 2.9vw, 2.25rem); }
+
+.section__head {
+  max-width: 42ch;
+  margin-bottom: clamp(2.25rem, 5vw, 3.75rem);
+}
+
+.section__kicker {
+  display: block;
+  font-size: var(--fs-label);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+.section--dark .section__kicker { color: var(--gold-on-dark); }
+
+/* --lg: more presence for a section that carries no headline of its own.
+   A rule and a step up in size — never enough to compete with the circle. */
+.section__kicker--lg {
+  font-size: .8125rem;
+  letter-spacing: .24em;
+  margin-bottom: var(--space-sm);
+}
+.section__kicker--lg::before {
+  content: '';
+  display: block;
+  width: 34px; height: 2px;
+  background: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.section__title {
+  font-size: var(--fs-h2);
+  line-height: 1.14;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.section__head--wide { max-width: 46rem; }
+/* only #work uses --quiet, and the space below its head is space the figure could use */
+.section__head:has(.section__lede--quiet) { margin-bottom: clamp(.625rem, 1.5vw, 1.125rem); }
+
+.section__lede--quiet {
+  color: var(--ink-soft);
+  max-width: 54ch;
+}
+
+.section__lede {
+  margin: var(--space-sm) 0 0;
+  max-width: 62ch;
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+}
+
+.eyebrow {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+/* ===== Buttons ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 46px;
+  padding: .7rem 1.4rem;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: .01em;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn--primary { background: var(--ink); color: var(--paper); }
+.btn--primary:hover { background: var(--accent); color: #fff; }
+
+.btn--ghost { border: 1px solid var(--line-strong); color: var(--ink); }
+.btn--ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+.btn--light { border: 1px solid rgba(250,247,244,.34); color: var(--on-dark); }
+.btn--light:hover { background: var(--on-dark); color: var(--ink); }
+
+.btn__arrow { transition: transform var(--dur) var(--ease); }
+.btn:hover .btn__arrow { transform: translateX(4px); }
+
+/* ===== Pilot notice ===== */
+.pilot-bar {
+  background: var(--ink);
+  color: var(--on-dark);
+  font-size: .8125rem;
+  line-height: 1.5;
+}
+.pilot-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-block: .6rem;
+}
+.pilot-bar__tag {
+  flex: none;
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-on-dark);
+  font-weight: 600;
+}
+.pilot-bar__text { flex: 1; color: var(--on-dark-soft); margin: 0; }
+.pilot-bar__close {
+  flex: none;
+  color: var(--on-dark-soft);
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: .35rem .5rem;
+  border-radius: var(--r-sm);
+}
+.pilot-bar__close:hover { color: var(--on-dark); }
+
+/* ===== Header ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,247,244,0);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              backdrop-filter var(--dur) var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled {
+  background: rgba(250,247,244,.90);
+  backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom-color: var(--line);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: var(--header-h);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.wordmark span { color: inherit; }   /* one colour — see .signature__last */
+
+.nav { display: none; }
+
+@media (min-width: 1024px) {
+  .nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
+}
+
+.nav__link {
+  position: relative;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  padding-block: .35rem;
+  transition: color var(--dur) var(--ease);
+}
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+.nav__link:hover { color: var(--ink); }
+.nav__link:hover::after,
+.nav__link[aria-current="true"]::after { transform: scaleX(1); }
+.nav__link[aria-current="true"] { color: var(--ink); }
+
+.menu-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px; height: 44px;
+  margin-right: -10px;
+  align-items: flex-end;
+}
+.menu-toggle span {
+  display: block; height: 1.5px; width: 22px;
+  background: var(--ink);
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease), width var(--dur) var(--ease);
+}
+.menu-toggle span:nth-child(2) { width: 15px; }
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { width: 22px; transform: translateY(-6.5px) rotate(-45deg); }
+
+@media (min-width: 1024px) { .menu-toggle { display: none; } }
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: var(--paper);
+  padding: calc(var(--header-h) + 3rem) var(--gutter) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility var(--dur);
+}
+.nav-overlay.is-open { opacity: 1; visibility: visible; transform: none; }
+
+.nav-overlay__list { display: grid; gap: var(--space-xs); }
+.nav-overlay__link {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  color: var(--ink);
+  display: block;
+  padding-block: .25rem;
+}
+.nav-overlay__link:hover { color: var(--accent); }
+.nav-overlay__meta { color: var(--ink-faint); font-size: var(--fs-sm); }
+
+@media (min-width: 1024px) { .nav-overlay { display: none; } }
+
+/* ===== Hero — type only, centred. No imagery by design. ===== */
+.hero {
+  padding-block: clamp(3.25rem, 8vw, 6.5rem) clamp(2.75rem, 6vw, 5rem);
+  text-align: center;
+  position: relative;
+}
+
+.hero__inner { max-width: 68rem; }
+
+.hero__eyebrow {
+  font-size: var(--fs-label);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+.hero__eyebrow span { color: var(--accent); margin-inline: .35em; }
+
+/* ===== The hero signature — the owner-supplied asset, used as delivered =====
+   Referencias/yenifer-daza-signature.png. The image carries the name, the
+   brushstroke and the PROJECT COORDINATOR · PRODUCT DESIGN & DEVELOPMENT line as
+   one artwork. Nothing in it is reproduced in HTML, CSS, SVG or a web font, and
+   nothing is placed on it — no background, container, border, shadow or filter.
+
+   Only two things are set here: how wide the asset is allowed to get, and the
+   vertical space around it.
+
+   WIDTH. --signature-w is the desktop cap, and the one number to change if the
+   owner wants the signature bigger or smaller. 46rem was chosen by measuring the
+   asset against the composition it replaces: at that width the script name's ink
+   is 588px (the Corinthia name it replaced measured 541.5px) and the descriptor's
+   cap height is 7.8px (the Inter descriptor it replaced measured ~10.1px), so the
+   lockup keeps the presence the hero was approved with. Below the cap the image
+   is simply 100% of the container, so it scales proportionally on tablet and
+   mobile. The intrinsic width/height on the <img> hold the 3:1 aspect ratio, so
+   the asset is never stretched, squashed or cropped.
+
+   VERTICAL SPACE. The asset ships with transparent padding — 158px of its 2170px
+   width above the ink and 123px below, i.e. 7.281% and 5.668%. The two negative
+   margins cancel exactly that, so the optical gap above and below the signature is
+   the hero's existing rhythm rather than that rhythm plus the file's own margin.
+   They are percentages of the <img>'s containing block, which is .hero__signature
+   and therefore the same width as the image, so they stay exact at every viewport.
+   display: flow-root keeps them from collapsing out of the h1. */
+.hero__signature {
+  --signature-w: 46rem;
+  display: flow-root;
+  max-width: min(100%, var(--signature-w));
+  margin: 0 auto clamp(1.5rem, 3vw, 2.25rem);   /* the descriptor block's old bottom margin */
+}
+.hero__signature img {
+  width: 100%;
+  height: auto;               /* aspect ratio held by the intrinsic size — never distorted */
+  margin-top: -7.281%;
+  margin-bottom: -5.668%;
+}
+
+.hero__lede {
+  font-size: var(--fs-lead);
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 62ch;
+  margin: 0 auto clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.hero__note {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-faint);
+  max-width: 54ch;
+  margin: 0 auto clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+.hero__scroll {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-faint);
+  font-size: 1.1rem;
+}
+.hero__scroll:hover { color: var(--accent); }
+@media (min-width: 900px) { .hero__scroll { display: flex; } }
+
+/* ===== Selected work — a numbered contents list, not a tile gallery ===== */
+.worklist { border-top: 0; }
+
+.wrow {
+  display: grid;
+  gap: var(--space-sm);
+  padding-block: clamp(1.375rem, 2.6vw, 1.875rem);
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+
+@media (min-width: 880px) {
+  .wrow {
+    grid-template-columns: 3.25rem minmax(0, 1fr) minmax(0, 24%);
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+}
+
+.wrow__num {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+.wrow__label {
+  display: block;
+  font-size: var(--fs-label);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+  margin-bottom: .5rem;
+}
+
+.wrow__title {
+  font-size: clamp(1.3125rem, 2.1vw, 1.75rem);
+  line-height: 1.18;
+  letter-spacing: 0;
+  margin-bottom: .6rem;
+  max-width: 34ch;
+}
+.wrow__title a {
+  color: var(--ink);
+  transition: color var(--dur) var(--ease);
+}
+.wrow__title a:hover { color: var(--accent); }
+
+.wrow__did,
+.wrow__out {
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  max-width: 66ch;
+  margin-bottom: .4rem;
+}
+.wrow__did { color: var(--ink-soft); }
+.wrow__out { color: var(--ink); }   /* the payoff is darker, not ruled — one less line on the page */
+
+.wrow__did > span,
+.wrow__out > span {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+.wrow__did > span::after,
+.wrow__out > span::after { content: " \2014 "; letter-spacing: 0; }
+
+.wrow__link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .5rem;
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  padding-block: .35rem;
+}
+.wrow__link:hover { color: var(--accent-hover); }
+.wrow__link .btn__arrow { transition: transform var(--dur) var(--ease); }
+.wrow__link:hover .btn__arrow { transform: translateX(4px); }
+
+.wrow__media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-md);
+}
+
+@media (min-width: 880px) {
+  .wrow__media { order: 3; }
+}
+
+/* ===== Work map — one identity, four areas of application =====
+   Mobile first: a plain, readable vertical structure with no diagram.
+   From 1000px it becomes the map: a drawn hub, four straight spokes and
+   four discs. Interaction highlights, it never hides.
+   Geometry (viewBox 1000×540, stage locked at 880px so every px below
+   stays true): hub r150 at (500,270), ring and arcs on r172, spoke
+   endpoints at (500±255, 270∓192) — the discs sit on those endpoints. */
+/* Kept deliberately tight: every pixel between the figure and the All projects bar is a
+   pixel the figure cannot have, because .work__lead lands as one block. */
+.workmap { margin-bottom: clamp(.375rem, .8vw, .625rem); }
+
+.workmap__stage { position: relative; }
+.workmap__lines { display: none; }
+
+.workmap__core { padding-bottom: var(--space-md); }
+
+.workmap__core-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.4vw, 2.875rem);
+  line-height: 1.02;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 0;
+}
+
+.workmap__core-sub {
+  display: inline-block;
+  margin: .9rem 0 0;
+  padding-top: .7rem;
+  border-top: 1px solid var(--accent);
+  font-size: .6875rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.wmnode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  width: 100%;
+  text-align: left;
+  position: relative;
+  padding: var(--space-sm) 0;
+  border-top: 1px solid var(--line);
+}
+.workmap__stage .wmnode:last-of-type { border-bottom: 1px solid var(--line); }
+
+.wmnode__text { order: 1; flex: 1 1 auto; }
+
+/* the disc — the graphic anchor of each spoke, and the cap that covers the
+   last 38px of its connector. Deliberately empty: the areas carry no counts. */
+.wmnode__disc {
+  order: 2;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.wmnode:hover .wmnode__disc,
+.wmnode:focus-visible .wmnode__disc,
+.wmnode.is-active .wmnode__disc {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+.wmnode__name {
+  display: block;
+  font-size: .8125rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--dur) var(--ease);
+}
+.wmnode:hover .wmnode__name,
+.wmnode.is-active .wmnode__name { text-decoration-color: var(--accent); }
+.wmnode.is-active .wmnode__name { text-decoration-thickness: 2px; }
+
+/* where the click actually goes — a link should never be a blind jump */
+.wmnode__go {
+  display: block;
+  margin-top: .3rem;
+  font-size: var(--fs-label);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--accent);
+}
+.wmnode__go span { display: inline-block; transition: transform var(--dur) var(--ease); }
+.wmnode:hover .wmnode__go span,
+.wmnode:focus-visible .wmnode__go span { transform: translateX(4px); }
+
+/* -- Status bar: sits on top of the list, so a selection needs no scroll to read -- */
+.wstatus {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-block: var(--space-xs);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.wstatus__text {
+  margin: 0;
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink);
+
+  /* the bar is a link now, so the label carries a hover underline */
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: text-decoration-color var(--dur) var(--ease);
+}
+
+/* The bar is also the route into the list. Hovering or focusing a branch renames it,
+   but a click always lands every project. Type, size, colour and position are untouched:
+   the affordance is a gold arrow dropped into the right-hand slot the flex layout
+   already reserved, set at --fs-label so the bar's height does not move a pixel —
+   .work__lead is on a 265px budget (see .workmap__stage). */
+.wstatus {
+  cursor: pointer;
+  color: var(--ink);
+  transition: border-color var(--dur) var(--ease);
+
+  /* the arrow sits next to the label, not at the far end of the rule: grouped, the two
+     read as one control; parked on the right edge the arrow reads as decoration. The
+     bar was already flex with space-between for the clear button that no longer exists. */
+  justify-content: flex-start;
+  gap: .55rem;
+}
+.wstatus:hover,
+.wstatus:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
+
+.wstatus:hover .wstatus__text,
+.wstatus:focus-visible .wstatus__text { text-decoration-color: var(--accent); }
+
+.wstatus__go {
+  flex: 0 0 auto;
+  font-size: .8125rem;   /* one step up so the arrow reads; measured to cost 0px of bar height */
+  line-height: 1;
+  font-weight: 600;
+  color: var(--accent);
+  transition: transform var(--dur) var(--ease);
+}
+.wstatus:hover .wstatus__go,
+.wstatus:focus-visible .wstatus__go { transform: translateY(3px); }
+
+/* no clear button: hovering or focusing a branch previews, clicking it navigates,
+   so there is no held state to undo */
+
+/* -- All projects waits until the circles have been engaged -------------
+   Her round-24 instruction: the bar must not be the first thing a visitor clicks, because
+   the four area circles are the main route into the work. So on a device that can hover,
+   the bar starts invisible and `is-armed` reveals it — set by main.js the first time any
+   area is hovered or focused, and never removed afterwards.
+
+   Three things make this safe rather than merely clever:
+     - it is `opacity`, not `display`, so the bar keeps its box and the whole About/Work
+       landing arithmetic and `data-anchor-keep` are untouched;
+     - it is inside `@media (hover: hover)`, so a touch device — where hovering does not
+       exist and hiding a navigation control would be pure harm — always shows it;
+     - it stays in the accessibility tree, and the four circles come before it in the DOM,
+       so a keyboard user reaches a circle first and arms it on the way. `:focus-visible`
+       is a second safety net in case focus ever lands on the bar first. */
+@media (hover: hover) {
+  /* The selector has to carry at least as much weight as round 19s
+     `.js .reveal[data-anchor-keep]`, which forces opacity 1 on this very element to keep
+     the reveal observer from hiding it. That exemption still stands — it is what
+     guarantees the bar is never invisible by accident. This adds the one deliberate
+     exception: not yet armed. */
+  .js .wstatus.reveal[data-anchor-keep]:not(.is-armed):not(:focus-visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .js .wstatus.reveal[data-anchor-keep] {
+    transition: opacity var(--dur) var(--ease);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js .wstatus.reveal[data-anchor-keep] { transition: none; }
+  }
+}
+
+/* -- Without JavaScript there is no centred landing --------------------
+   The scripted path centres `.work__lead` and pins the All projects bar with
+   `data-anchor-keep`, so the bar is on screen on every arrival route. With the
+   script unavailable the browser does its own fragment jump, which parks the
+   section top at `scroll-padding-top` and leaves the bar roughly 130px below the
+   fold — measured at 129px on a 1440 window, 121px at 1366 and 87px at 1024.
+   These two declarations exist only for that case: `.js` is set by main.js, so
+   they never apply to the scripted path, and they trade the section's top padding
+   plus a negative scroll margin for enough room to bring the bar into view.
+   They stop helping below roughly a 600px viewport, where nothing fits. */
+html:not(.js) #work {
+  padding-top: 1rem;
+  scroll-margin-top: -2rem;
+}
+
+/* -- Rows recede when an area is selected; nothing is removed -- */
+.wrow { transition: opacity var(--dur) var(--ease); }
+.wrow.is-dimmed { opacity: .3; }
+
+@media (min-width: 1000px) {
+  /* The stage carries the SVG's own aspect ratio, so every percentage offset below
+     lands on its drawn point at any width — the composition never drifts.
+     1080px is the design size. On a short window the stage gives height back so the
+     whole of `.work__lead` — Selected work through All projects — still lands in
+     one view when Work is clicked. 265px is the rest of that block plus the header
+     and its gap; 1018/622 converts the height back to a width and must be kept equal
+     to the viewBox, which is why it is written the same way in both places. */
+  .workmap__stage {
+    /* The ratio is written the same way in both places on purpose — 1018/622 is the
+       viewBox, and the two must never diverge or every percentage-positioned circle
+       drifts off its drawn point. 265px is everything in .work__lead except the stage,
+       plus the header and its gap; raise it if that block gains height. */
+    aspect-ratio: 1018 / 622;
+    max-width: min(1080px, max(600px, calc((100vh - 265px) * 1018 / 622)));
+    margin-inline: auto;
+
+    /* The figure is one scalable composition: the circles are drawn in viewBox units,
+       and everything set in cqw below is a percentage of this stage. Before this the
+       centre type was sized in vw while the circles were sized by the stage, so on a
+       short window the stage shrank and the type did not -- which is what pushed
+       "Coordination" past the edge of the centre. Every cqw declaration keeps its
+       previous value above it as a fallback. */
+    container-type: inline-size;
+  }
+
+  .workmap__lines {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* the centre is the dominant element: the largest circle and the largest type */
+  .workmap__core {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 31.9061%;
+    padding: 0;
+    text-align: center;
+    z-index: 3;
+  }
+  /* 4.7727cqw is the approved desktop size -- 42px on the old 880px stage -- held as a
+     proportion of the figure instead of the window. At the design size "Coordination"
+     is 74.9% of the hub's diameter and clears the arc on both sides by the same amount,
+     and it stays that way at every stage width. */
+  .workmap__core-title {
+    font-size: clamp(1.75rem, 3.1vw, 2.625rem);
+    font-size: 5.251cqw;
+  }
+  .workmap__core-sub {
+    position: relative;
+    margin-top: .9rem;
+    margin-top: 1.8004cqw;
+    padding-top: 0;
+    border-top: 0;
+    font-size: .625rem;
+    /* proportional to the figure, but never below the 10px the site uses as its
+       smallest type: on a short window the stage shrinks a long way, and 1.1364cqw
+       alone would put this line at ~7px */
+    font-size: max(.625rem, 1.2503cqw);
+    letter-spacing: .12em;
+  }
+  .workmap__core-sub::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: -.7rem;
+    top: -1.4002cqw;
+    transform: translateX(-50%);
+    width: 26px; height: 1px;
+    width: 3.2506cqw;
+    background: var(--accent);
+  }
+
+  /* Each area becomes a circle of its own, slightly smaller than the centre
+     (290 against 336 in viewBox units) and anchored on its drawn position. The
+     whole circle is the link; the disc is its surface and the text rides on top,
+     so no markup had to be reordered. */
+  .wmnode {
+    position: absolute;
+    display: block;
+    width: 25.5403%;        /* 260 / 1018 — smaller than the centre's 380 */
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    text-align: center;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    transition: transform var(--dur) var(--ease);
+  }
+  .workmap__stage .wmnode:last-of-type { border-bottom: 0; }
+
+  /* the same four drawn centres — (195,148) (925,148) (925,492) (195,492) — read against
+     the cropped viewBox "51 9 1018 622", so the percentages moved even though the drawing
+     did not: (195-51)/1018 and (148-9)/622. */
+  .wmnode--product    { left: 14.1454%; top: 22.3473%; }
+  .wmnode--production { left: 85.8546%; top: 22.3473%; }
+  .wmnode--process    { left: 85.8546%; top: 77.6527%; }
+  .wmnode--business   { left: 14.1454%; top: 77.6527%; }
+
+  .wmnode__disc {
+    order: 0;
+    position: absolute;
+    inset: 0;
+    width: auto; height: auto;
+    border-radius: 50%;
+    border: 1px solid rgba(207, 201, 193, .5);
+    box-shadow:
+      0 22px 42px -30px rgba(11, 18, 21, .30),
+      0 3px 10px -6px rgba(11, 18, 21, .08);
+    transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease),
+                background var(--dur) var(--ease);
+  }
+  /* four neutral tints, stepped so the composition has depth without a second hue */
+  .wmnode--product    .wmnode__disc { background: rgba(252, 250, 247, .92); }
+  .wmnode--production .wmnode__disc { background: rgba(229, 225, 218, .90); }
+  .wmnode--business   .wmnode__disc { background: rgba(241, 238, 233, .92); }
+  .wmnode--process    .wmnode__disc { background: rgba(219, 212, 201, .92); }
+
+  .wmnode__text {
+    position: relative;
+    z-index: 1;
+    order: 0;
+    width: 74%;
+    flex: 0 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    gap: 1.0002cqw;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  /* the areas scale with the figure as well, so their line counts and their air are
+     identical at every stage width */
+  .wmnode__name {
+    font-family: var(--font-display);
+    font-size: clamp(.875rem, 1.32vw, 1.0625rem);
+    font-size: 2.1254cqw;
+    line-height: 1.15;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  /* the call to action keeps the system gold and gains the reference's short rule
+     above it, so it reads as an action without any added wording */
+  .wmnode__go {
+    position: relative;
+    padding-top: .8rem;
+    padding-top: 1.6003cqw;
+    font-size: .625rem;
+    font-size: max(.625rem, 1.2503cqw);   /* same 10px floor as the centre sub-line */
+    letter-spacing: .16em;
+  }
+  .wmnode__go::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: .3rem;
+    top: 0.6002cqw;
+    transform: translateX(-50%);
+    width: 26px; height: 1px;
+    width: 3.2506cqw;
+    background: var(--accent);
+    opacity: .75;
+    transition: width var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+
+  /* hover, focus and the JS preview state all lift the circle the same way */
+  .wmnode:hover,
+  .wmnode:focus-visible,
+  .wmnode.is-active { transform: translate(-50%, -50%) scale(1.028); }
+  .wmnode:hover .wmnode__disc,
+  .wmnode:focus-visible .wmnode__disc,
+  .wmnode.is-active .wmnode__disc {
+    border-color: rgba(161, 133, 79, .55);
+    box-shadow:
+      0 28px 52px -30px rgba(11, 18, 21, .34),
+      0 4px 12px -6px rgba(11, 18, 21, .10);
+    background: var(--accent-tint);
+  }
+  .wmnode:hover .wmnode__go::before,
+  .wmnode:focus-visible .wmnode__go::before,
+  .wmnode.is-active .wmnode__go::before { width: 40px; width: 5.001cqw; opacity: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wmnode, .wmnode__disc, .wmnode__go::before { transition: none; }
+    .wmnode:hover, .wmnode:focus-visible, .wmnode.is-active { transform: translate(-50%, -50%); }
+  }
+
+  .wstatus { padding-block: .625rem; }
+}
+
+/* -- SVG layer --
+   Depth comes from three things and nothing else: overlapping veils at very low
+   opacity, hairline outlines, and one soft shadow under the centre. Nothing here
+   carries meaning — the four areas are siblings, and no mark implies an order. */
+
+/* the layered veils behind the whole composition */
+.wm-veil {
+  fill: var(--paper-alt);
+  opacity: .34;
+  mix-blend-mode: multiply;
+}
+.wm-veil--wide { fill: var(--wm-mist); opacity: .26; }
+
+/* hairline circles, the finest line in the composition */
+.wm-hair {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  opacity: .45;
+  vector-effect: non-scaling-stroke;
+}
+
+.wm-hub {
+  fill: var(--wm-ivory);
+  stroke: rgba(207, 201, 193, .55);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 20px 34px rgba(11, 18, 21, .10));
+}
+.wm-ring {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* the fine arc that hugs the outer edge of each area circle */
+.wm-edge {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: .42;
+  vector-effect: non-scaling-stroke;
+  transition: opacity var(--dur) var(--ease), stroke-width var(--dur) var(--ease);
+}
+.wm-edge.is-active { opacity: .95; stroke-width: 2.2; }
+/* the four gold arcs sit on the ring, one per spoke, and light with it */
+.wm-arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: .34;
+  vector-effect: non-scaling-stroke;
+  transition: opacity var(--dur) var(--ease), stroke-width var(--dur) var(--ease);
+}
+.wm-arc.is-active { opacity: 1; stroke-width: 4; }
+
+.wm-line {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  transition: stroke var(--dur) var(--ease), stroke-width var(--dur) var(--ease);
+}
+.wm-line.is-active { stroke: var(--accent); stroke-width: 1.8; }
+
+/* ===== How I work — one connected flow, not five cards ===== */
+.flow {
+  display: grid;
+  gap: var(--space-lg);
+  position: relative;
+}
+
+.flow__step { position: relative; padding-left: 2.25rem; }
+
+/* the segment that joins this stage to the next one */
+.flow__step::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 1.35rem;
+  bottom: calc(-1 * var(--space-lg));
+  width: 1px;
+  background: var(--line-strong);
+}
+.flow__step:last-child::before { display: none; }
+
+.flow__mark {
+  position: absolute;
+  left: 0; top: .35rem;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  border: 1px solid var(--ink-soft);
+  background: var(--paper-alt);
+}
+.flow__step--key .flow__mark {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(161, 133, 79, .18);
+}
+
+.flow__num {
+  display: block;
+  font-size: var(--fs-label);
+  letter-spacing: .18em;
+  color: var(--ink-faint);
+  margin-bottom: .35rem;
+}
+
+.flow__title {
+  font-size: clamp(1.375rem, 2.1vw, 1.75rem);
+  line-height: 1.15;
+  margin-bottom: .45rem;
+}
+.flow__step--key .flow__title { color: var(--accent-hover); }
+
+.flow__desc {
+  margin: 0;
+  max-width: 36ch;
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  line-height: 1.62;
+}
+
+/* -- the loop back: improve informs the next understand and plan -- */
+.flow__loop { position: relative; margin-top: var(--space-lg); padding-left: 2.25rem; }
+.flow__loop::before {
+  content: '';
+  position: absolute;
+  left: 7px; top: -2rem; bottom: .35rem;
+  border-left: 1px dashed var(--line-strong);
+}
+/* Below 1000px the return path is a dashed border rather than an SVG, and a border cannot
+   carry a travelling dash — so the light is a short gold gradient sliding down the same
+   line. Same idea, same accent, no extra element. */
+.flow__loop::after {
+  content: '';
+  position: absolute;
+  left: 6px; top: -2rem; bottom: .35rem;
+  width: 3px;
+  background: linear-gradient(to bottom,
+    rgba(161, 133, 79, 0) 0%,
+    rgba(161, 133, 79, 0) 38%,
+    rgba(161, 133, 79, .85) 47%,
+    rgba(161, 133, 79, .85) 53%,
+    rgba(161, 133, 79, 0) 62%,
+    rgba(161, 133, 79, 0) 100%);
+  background-size: 100% 300%;
+  background-repeat: no-repeat;
+  animation: loop-spark-v 5.6s linear infinite;
+  pointer-events: none;
+}
+@keyframes loop-spark-v {
+  from { background-position: 0 -100%; }
+  to   { background-position: 0 200%; }
+}
+.flow__loop-path { display: none; }
+.flow__loop-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  line-height: 1.66;
+}
+.flow__loop-note strong { color: var(--ink); font-weight: 500; }
+
+@media (min-width: 1000px) {
+  .flow {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+  .flow__step { padding-left: 0; padding-top: 2.1rem; }
+  .flow__step::before {
+    left: 15px;
+    right: calc(-1 * var(--space-md));
+    top: 7px;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+  .flow__mark { left: 0; top: 0; }
+  .flow__desc { max-width: none; }
+
+  .flow__loop { padding-left: 0; margin-top: var(--space-sm); }
+  .flow__loop::before,
+  .flow__loop::after { display: none; }
+  .flow__loop-path { display: block; width: 100%; height: 54px; }
+  .flow__loop-path path {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1;
+    stroke-dasharray: 3 5;
+    vector-effect: non-scaling-stroke;
+  }
+  .flow__loop-path path:last-child {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: none;
+  }
+
+  /* One short bright dash travelling the return leg. 2100 is comfortably longer than the
+     path, so the gap after the dash is never seen twice; the dash itself is 90 units, and
+     the offset runs the whole length so the light enters at Improve and leaves at
+     Understand — the direction the note describes. */
+  .flow__loop-path path.flow__loop-spark {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 90 2100;
+    stroke-dashoffset: 2190;
+    opacity: .55;
+    animation: loop-spark 5.6s linear infinite;
+  }
+  @keyframes loop-spark {
+    from { stroke-dashoffset: 2190; }
+    to   { stroke-dashoffset: 0; }
+  }
+  .flow__loop-note {
+    margin-top: var(--space-xs);
+    text-align: center;
+    max-width: 62ch;
+    margin-inline: auto;
+  }
+}
+
+/* ===== About — layout lives at the foot of this file, with Tools ===== */
+
+/* languages sit quietly under the portrait — stated, never a feature */
+.langs {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin: 0;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line);
+}
+.langs__label {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.langs__value { font-size: var(--fs-sm); color: var(--ink); }
+
+/* ===== Contact ===== */
+.contact { display: grid; gap: var(--space-xl); }
+
+@media (min-width: 900px) {
+  .contact { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: end; }
+}
+
+.contact__title { font-size: var(--fs-h2); margin-bottom: var(--space-md); }
+.contact__lede { color: var(--on-dark-soft); max-width: 46ch; margin-bottom: var(--space-lg); }
+
+.contact__mail {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 3.6vw, 2.375rem);
+  color: var(--on-dark);
+  letter-spacing: -0.02em;
+  word-break: break-word;
+  border-bottom: 1px solid rgba(250,247,244,.30);
+  padding-bottom: .25rem;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.contact__mail:hover { color: var(--gold-on-dark); border-color: var(--gold-on-dark); }
+
+.contact__list { display: grid; gap: 0; border-top: 1px solid rgba(250,247,244,.18); }
+.contact__item { padding-block: var(--space-sm); border-bottom: 1px solid rgba(250,247,244,.18); }
+.contact__item dt {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--on-dark-soft);
+  margin-bottom: .2rem;
+}
+.contact__item dd { margin: 0; font-size: var(--fs-sm); color: var(--on-dark); }
+.contact__item a { color: var(--on-dark); border-bottom: 1px solid rgba(250,247,244,.42); }
+.contact__item a:hover { color: var(--gold-on-dark); border-color: var(--gold-on-dark); }
+
+/* ===== Footer ===== */
+.site-footer {
+  background: var(--paper-deep);
+  color: var(--on-dark-soft);
+  padding-block: var(--space-lg);
+  border-top: 1px solid rgba(250,247,244,.14);
+  font-size: var(--fs-sm);
+}
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+  align-items: center;
+  justify-content: space-between;
+}
+.site-footer .wordmark { color: var(--on-dark); }
+.site-footer a { color: var(--on-dark-soft); }
+.site-footer a:hover { color: var(--on-dark); }
+.site-footer__note { font-size: .8125rem; max-width: 44ch; }
+
+/* =============================================================
+   Case study pages
+   ============================================================= */
+
+.cs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  margin-bottom: var(--space-lg);
+}
+.cs-back:hover { color: var(--accent); }
+
+.cs-hero { padding-block: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem); }
+
+.cs-hero__eyebrow { display: block; margin-bottom: var(--space-sm); }
+
+.cs-hero__title {
+  font-size: var(--fs-h1);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  max-width: 20ch;
+  margin-bottom: var(--space-md);
+}
+
+.cs-hero__lede {
+  font-size: var(--fs-lead);
+  color: var(--ink-soft);
+  max-width: 58ch;
+  line-height: 1.6;
+}
+
+.cs-cover {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.cs-cover img { width: 100%; aspect-ratio: 21 / 9; object-fit: cover; }
+
+@media (max-width: 767px) { .cs-cover img { aspect-ratio: 3 / 2; } }
+
+.cs-meta {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 768px) {
+  .cs-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-xl); }
+}
+@media (min-width: 1024px) {
+  .cs-meta { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--space-lg); }
+}
+
+.cs-meta__item { padding-block: var(--space-sm); border-bottom: 1px solid var(--line); }
+.cs-meta__item dt {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: .3rem;
+}
+.cs-meta__item dd { margin: 0; font-size: var(--fs-sm); color: var(--ink); line-height: 1.6; }
+
+/* Body layout with sticky index */
+.cs-body { display: grid; gap: var(--space-xl); }
+
+@media (min-width: 1024px) {
+  .cs-body { grid-template-columns: 13rem minmax(0, 1fr); gap: clamp(3rem, 6vw, 5rem); align-items: start; }
+}
+
+.cs-toc { display: none; }
+
+@media (min-width: 1024px) {
+  .cs-toc {
+    display: block;
+    position: sticky;
+    top: calc(var(--header-h) + 2.5rem);
+  }
+}
+.cs-toc__title {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-xs);
+}
+.cs-toc__list { display: grid; gap: .1rem; }
+.cs-toc__link {
+  display: block;
+  font-size: .8125rem;
+  color: var(--ink-faint);
+  padding-block: .32rem;
+  transition: color var(--dur) var(--ease), padding var(--dur) var(--ease);
+}
+.cs-toc__link:hover { color: var(--ink); }
+.cs-toc__link[aria-current="true"] { color: var(--accent); font-weight: 500; }
+
+.cs-section { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+.cs-section:last-child { padding-bottom: 0; }
+
+.cs-section__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+}
+.cs-num {
+  font-family: var(--font-display);
+  font-size: .9375rem;
+  color: var(--accent);
+  flex: none;
+}
+.cs-section__title { font-size: var(--fs-h3); }
+
+.cs-prose { color: var(--ink-soft); max-width: 68ch; }
+.cs-prose p + p { margin-top: var(--space-sm); }
+.cs-prose strong { color: var(--ink); font-weight: 500; }
+
+.cs-list { display: grid; gap: .55rem; margin-top: var(--space-sm); max-width: 68ch; }
+.cs-list li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  line-height: 1.68;
+}
+.cs-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: .68em;
+  width: 6px; height: 1px;
+  background: var(--accent);
+}
+.cs-list strong { color: var(--ink); font-weight: 500; }
+
+/* Requirements table */
+.req-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-md);
+  font-size: var(--fs-sm);
+}
+.req-table caption {
+  text-align: left;
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: var(--space-xs);
+}
+.req-table th, .req-table td {
+  text-align: left;
+  padding: .75rem 1rem .75rem 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.6;
+}
+.req-table th {
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  width: 30%;
+}
+.req-table td { color: var(--ink-soft); }
+
+.table-scroll { overflow-x: auto; }
+
+/* Stakeholders */
+.stake-list { display: flex; flex-wrap: wrap; gap: var(--space-3xs); margin-top: var(--space-md); }
+.stake-list li {
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  padding: .35rem .8rem;
+  border-radius: var(--r-pill);
+}
+
+/* Figures */
+.figure { margin: var(--space-lg) 0 0; }
+.figure img { width: 100%; border-radius: var(--r-md); object-fit: cover; }
+.figure--wide img { aspect-ratio: 16 / 9; }
+.figure--tall img { aspect-ratio: 4 / 5; }
+.figure__cap {
+  margin-top: var(--space-xs);
+  font-size: .8125rem;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.figure-grid { display: grid; gap: var(--space-md); margin-top: var(--space-lg); }
+@media (min-width: 640px) { .figure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.figure-grid .figure { margin-top: 0; }
+.figure-grid img { aspect-ratio: 4 / 3; }
+
+/* Callout + quote */
+.callout {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--paper-alt);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+}
+.callout__label {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: var(--space-2xs);
+}
+.callout p { font-size: var(--fs-sm); color: var(--ink-soft); line-height: 1.7; }
+
+.quote {
+  margin: var(--space-lg) 0 0;
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--line-strong);
+}
+.quote p {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 2vw, 1.4375rem);
+  line-height: 1.4;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+
+/* Results */
+.results { display: grid; gap: var(--space-md); margin-top: var(--space-md); }
+@media (min-width: 560px) { .results { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .results { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-sm); } }
+
+.result-card {
+  padding: var(--space-md) var(--space-sm) var(--space-md) 0;
+  border-top: 2px solid var(--ink);
+}
+.result-card__value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
+  line-height: 1;
+  color: var(--accent);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-2xs);
+}
+.result-card__label { font-size: var(--fs-sm); color: var(--ink-soft); line-height: 1.55; }
+
+.verify-note {
+  margin-top: var(--space-md);
+  font-size: .8125rem;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+/* Next project */
+.next-project { border-top: 1px solid var(--line); }
+.next-project__link {
+  display: grid;
+  gap: var(--space-md);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .next-project__link { grid-template-columns: minmax(0, 1fr) 12rem; gap: var(--space-xl); }
+}
+.next-project__label {
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: block;
+  margin-bottom: var(--space-2xs);
+}
+.next-project__title {
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+  color: var(--ink);
+  transition: color var(--dur) var(--ease);
+}
+.next-project__link:hover .next-project__title { color: var(--accent); }
+.next-project__media img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r-md); }
+
+/* ===== 404 ===== */
+.notfound {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: var(--space-md);
+}
+.notfound h1 { font-size: var(--fs-h1); }
+.notfound p { color: var(--ink-soft); }
+
+/* ===== Reveal ===== */
+.reveal { opacity: 1; }
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+/* An element that must never land below the fold must never land invisible either.
+   `.wstatus` carries both `reveal` and `data-anchor-keep`, and the reveal observer
+   uses `rootMargin: 0px 0px -8% 0px` with a 0.06 threshold — so a bar sitting in the
+   bottom 8% of the window, which is exactly where a correct Work landing puts it,
+   never intersects, never gets `is-visible`, and stays at opacity 0. The bar was in
+   the right place the whole time and simply could not be seen. Anything marked
+   `data-anchor-keep` is therefore exempt from the fade: it is a navigation control,
+   not decoration, and it has to be readable the instant the landing settles. */
+.js .reveal[data-anchor-keep] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Set by centredAnchors() on every .reveal inside a block it has just landed. A block
+   we scrolled to on purpose is shown immediately rather than fading in, which also
+   means its geometry is final when the script measures it. */
+.js .reveal.is-shown {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+  .js .reveal { opacity: 1; transform: none; }
+}
+
+/* ===== Print ===== */
+@media print {
+  .site-header, .nav-overlay, .pilot-bar, .cs-toc, .filters, .next-project { display: none !important; }
+  body { background: #fff; color: #000; }
+  .section { padding-block: 1.5rem; }
+}
+
+/* ===== About — one editorial composition =====
+   Three zones across the top — portrait, narrative, selected impact — and the
+   tools band running the full container width underneath. Clicking About has to
+   land the whole thing, so height is the scarce resource in this section: it is
+   bought with proportion, gaps and column widths, never by shrinking type. The
+   anchor target is `.about-composition`, so the section's own padding falls
+   outside the viewport budget. */
+
+.about {
+  /* named so .impact can draw its divider inside the gutter without taking width
+     from the narrative — see .impact::before */
+  --about-gap: clamp(1.5rem, 3vw, 2.5rem);
+  display: grid;
+  gap: var(--about-gap);
+  align-items: start;
+}
+
+/* tablet — portrait beside the narrative, impact across the width below */
+@media (min-width: 860px) {
+  .about {
+    grid-template-columns: 11.5rem minmax(0, 1fr);
+    grid-template-areas:
+      'side body'
+      'impact impact';
+    --about-gap: clamp(1.75rem, 3.4vw, 2.75rem);
+    column-gap: var(--about-gap);
+  }
+  .about__side { grid-area: side; }
+  .about__body { grid-area: body; }
+  .impact      { grid-area: impact; }
+}
+
+/* desktop — the three zones read as one composition, left to right */
+@media (min-width: 1024px) {
+  .about {
+    grid-template-columns: 10.5rem minmax(0, 1fr) 11rem;
+    grid-template-areas: 'side body impact';
+    --about-gap: clamp(2rem, 3.2vw, 2.75rem);
+    column-gap: var(--about-gap);
+  }
+}
+
+.about__side { display: grid; gap: var(--space-md); align-content: start; }
+.about__media { max-width: 10.5rem; }
+.about__media img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--r-md);
+}
+
+/* The narrative carries the section, so it sits a step above body size — the
+   proportion in the owner's reference. Leading comes down as the size goes up so
+   the column still reads light and editorial rather than heavy. */
+.about__body {
+  font-size: 1.125rem;
+  line-height: 1.64;
+}
+@media (min-width: 1024px) {
+  .about__body { font-size: 1.1875rem; line-height: 1.62; }
+}
+/* no max-width: the grid column is the measure. Capping it here only adds lines,
+   and About is sized by its tallest zone. */
+.about__body p { color: var(--ink-soft); max-width: none; }
+.about__body p + p { margin-top: .85em; }
+
+/* ===== Selected impact — the third zone, never a panel =====
+   Serif figures at display scale, captions in the quiet voice. No card, no
+   frame, no background, no icon, no chart: it is evidence set beside the
+   narrative, not a widget competing with it. */
+/* Selected impact reads as a supporting column, not a second headline: the figures
+   sit a step down from where they were so the three paragraphs carry the section,
+   and a hairline separates the two. */
+.impact { display: grid; gap: var(--space-2xs); align-content: start; }
+
+/* the divider is drawn inside the existing gutter, so no column loses width and
+   the narrative does not gain a single line */
+@media (min-width: 1024px) {
+  .impact { position: relative; }
+  .impact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(-1 * var(--about-gap) / 2);
+    width: 1px;
+    background: var(--line);
+  }
+}
+/* stacked, the same separation reads as a rule above it */
+@media (max-width: 1023px) {
+  .impact {
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-sm);
+  }
+}
+
+.impact__title {
+  display: block;
+  font-size: var(--fs-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.impact__list {
+  display: grid;
+  gap: clamp(.875rem, 1.5vw, 1.125rem);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.impact__figure {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.4vw, 2.125rem);
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.impact__caption {
+  display: block;
+  margin-top: .28rem;
+  font-size: .8125rem;
+  line-height: 1.38;
+  color: var(--ink-soft);
+}
+
+/* between the tablet stack and the desktop column the three figures read across */
+@media (min-width: 560px) and (max-width: 1023px) {
+  .impact__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-md);
+  }
+}
+
+/* ===== Tools — grouped by what they support =====
+   Grouped, not listed one by one: no rating bars, no percentages, no logo wall.
+   The band takes the full container width, and the four columns are uneven on
+   purpose — sized to their content so each group lands in about two lines plus
+   its caption instead of collapsing into a narrow ragged stack. */
+/* Tools is compact professional metadata: the least visual weight of anything in
+   About, scannable in one pass, and never in competition with the narrative or
+   Selected impact.
+
+   Round 20 raised every voice a step and the band came out bigger and more dominant
+   than before. Round 21 takes it back down — a step below round 20 on every voice,
+   the three levels pulled closer together, and the dividers lightened. The hierarchy
+   comes from size, colour and spacing; the only weight used is one semibold on the
+   category titles, which she asked for.
+
+   The scale. ADVANCED is deliberately well under its tool name, and the reading order
+   is titles -> tools -> capabilities, with the third level clearly secondary:
+     TOOLS               12px     medium,   .24em tracking, gold
+     category title      11px     semibold, .1em tracking (1.1px), ink
+     tool names          13px     regular,  ink
+     ADVANCED            11px     medium,   .05em tracking, gold
+     capabilities        11.5px   regular,  ink-soft, 1.35 leading
+
+   No card, background, box, icon, bullet, badge or shadow: the four hairlines and the
+   four columns are the ones that were already there, and the hairlines are now the
+   lighter of the two line tokens. */
+/* --tools-air is the gap above the rule that opens Tools AND the gap below the end of
+   the band, so the zone sits between two equal spaces. It lives on #about so the height
+   regimes change one value and both sides follow. */
+.tools {
+  margin-top: var(--tools-air);
+  border-top: 1px solid rgba(227, 222, 216, .75);   /* --line, softened */
+  padding-top: var(--space-sm);                     /* TOOLS stands clear of the rule */
+}
+
+/* 10px against the 11px of both ABOUT and APPLIED PROJECT MANAGEMENT: this label is
+   deliberately the smallest of the three section marks. */
+.tools__title {
+  font-family: var(--font-sans);
+  font-size: .625rem;             /* 10px */
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  font-weight: 500;               /* medium — it labels the band, it does not lead it */
+  color: rgba(161, 133, 79, .9);  /* --accent, softened */
+  line-height: 1.2;
+  margin-bottom: .34rem;
+}
+
+.toolgroups {
+  display: grid;
+  gap: var(--space-sm) var(--space-md);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+@media (min-width: 560px)  { .toolgroups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) {
+  .toolgroups {
+    /* Four equal columns, her round-23 instruction. They were uneven from round 5 to
+        round 22, sized to their content so each group's title fitted on one line; at the
+        round-23 type sizes an equal column is 262px at 1440 and the longest title needs
+        about 260, so it still fits. Nothing is line-count-equalised — that went in
+        round 21 — so a column that needs an extra line simply takes one. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: clamp(1rem, 1.4vw, 1.25rem);
+  }
+  /* NO ROW RESERVATIONS. Rounds 15 to 20 reserved the label, tool and caption rows
+     across the four columns so the rules, the tool names and the captions each sat on
+     one baseline. Round 21 removed that on her instruction — "no intentes igualar
+     artificialmente la cantidad de líneas entre columnas... permite que cada columna
+     respire naturalmente" — and it is the single biggest saving in the band, because
+     the reservation forced every caption to the height of the tallest.
+     Do not reintroduce a min-height here without her saying so. */
+}
+
+/* Level 1 — the category title. It rests on its own hairline, and that hairline is
+   now a soft tint of the existing line token rather than the token at full strength:
+   she asked for the dividers to carry less weight. */
+.toolgroup__label {
+  --tg-label-lh: 1.2;
+  --tg-label-pb: .1rem;
+  display: block;
+  font-size: .625rem;             /* 10px */
+  letter-spacing: .1em;           /* ~1px at 10px */
+  text-transform: uppercase;
+  font-weight: 600;               /* the one semibold in the band, and the only one */
+  color: rgba(11, 18, 21, .7);    /* --ink, softened */
+  line-height: var(--tg-label-lh);
+  padding-bottom: var(--tg-label-pb);
+  margin-bottom: .3rem;           /* title -> tools */
+  border-bottom: 1px solid rgba(227, 222, 216, .6);   /* --line at 60% */
+}
+
+/* Level 2 — the tool names. Regular weight, full ink, and the largest voice in the
+   band, but a step down from round 20. */
+.toolgroup__list {
+  --tg-list-lh: 1.36;
+  margin: 0;
+  font-size: .75rem;              /* 12px */
+  font-weight: 400;
+  line-height: var(--tg-list-lh);
+  color: rgba(11, 18, 21, .78);   /* --ink, softened */
+}
+/* ADVANCED is a trailing qualifier and must read as clearly smaller and more
+   secondary than the tool name it follows: 11px against 13px, medium not semibold. */
+.toolgroup__list em {
+  font-style: normal;
+  font-size: .5625rem;            /* 9px against the name's 12px — clearly a qualifier */
+  font-weight: 500;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: rgba(161, 133, 79, .8);  /* --accent, softened */
+  white-space: nowrap;
+}
+
+/* Level 3 — the capabilities line. The quietest voice in the whole section, and
+   pulled close to the tools it describes so the three levels read as one group. */
+.toolgroup__desc {
+  --tg-desc-lh: 1.32;
+  margin: .22rem 0 0;             /* tools -> capabilities */
+  font-size: .65625rem;           /* 10.5px */
+  font-weight: 400;
+  line-height: var(--tg-desc-lh);
+  color: rgba(79, 90, 86, .82);   /* --ink-soft, softened */
+}
+
+/* Step 1 — windows under about 900px tall. The narrative comes down one notch but
+   stays clearly above every other voice in the section. */
+@media (min-width: 1280px) and (max-height: 880px) {
+  #about.section--fit { padding-top: clamp(1.5rem, 2.6vw, 2.25rem); }
+  #about .section__kicker { margin-bottom: var(--space-3xs); }
+  #about .section__head { margin-bottom: var(--space-xs); }
+  #about .section__title { font-size: clamp(1.5rem, 2.5vw, 2rem); }
+  #about .about { row-gap: var(--space-sm); --about-gap: clamp(1.5rem, 2.4vw, 2rem); column-gap: var(--about-gap); grid-template-columns: 9.75rem minmax(0, 1fr) 10.25rem; }
+  #about .about__side { gap: var(--space-sm); }
+  #about .about__media { max-width: 9.75rem; }
+  #about .about__body { font-size: 1.1875rem; line-height: 1.58; }
+  #about .about__body p + p { margin-top: .72em; }
+  #about .impact__figure { font-size: 1.875rem; }
+  #about .impact__list { gap: var(--space-xs); }
+  #about .tools { padding-top: var(--space-xs); }
+  #about .tools__title { margin-bottom: .34rem; }
+  #about .applied__inner { padding-block: 1.9375rem; }
+}
+
+/* Step 2 — the original short-window regime, tightened. Bought back from gaps,
+   padding, the portrait and one step of type. */
+@media (min-width: 1280px) and (max-height: 800px) {
+  /* padding-top only: #about keeps padding-bottom 0 so the Applied band sits
+     flush against the end of the section */
+  #about.section--fit { padding-top: clamp(1.25rem, 2.2vw, 2rem); }
+  #about .section__kicker { margin-bottom: var(--space-2xs); }
+  #about .section__head { margin-bottom: var(--space-xs); }
+  #about .about { row-gap: var(--space-sm); --about-gap: var(--space-md); column-gap: var(--about-gap); grid-template-columns: 9.5rem minmax(0, 1fr) 11rem; }
+  #about .about__side { gap: var(--space-sm); }
+  #about .about__media { max-width: 9.5rem; }
+  #about .about__body { font-size: 1.125rem; line-height: 1.54; }
+  #about .about__body p + p { margin-top: .6em; }
+  #about .impact__figure { font-size: 1.75rem; }
+  #about .impact__list { gap: var(--space-xs); }
+  #about .impact__caption { font-size: .75rem; }
+  #about .tools { padding-top: var(--space-xs); }
+  #about .tools__title { margin-bottom: .3rem; }
+  /* only the leading and the gaps tighten here — no type size changes */
+  #about .toolgroup__label { margin-bottom: .3rem; }
+  #about .toolgroup__list { --tg-list-lh: 1.38; }
+  #about .toolgroup__desc { --tg-desc-lh: 1.32; margin-top: .22rem; }
+  #about .toolgroups { row-gap: var(--space-xs); }
+  /* the band is inside the landing now, so it compresses with everything else */
+  #about .applied__inner { padding-block: 1.8125rem; }
+  #about .applied__icon svg { width: 1.75rem; }
+}
+
+/* Step 3 — a 1366x768 or 1280x720 laptop, where the browser viewport is nearer
+   700px. This is the last step that keeps the whole landing on screen; below it the
+   block no longer fits and the script falls back to a top-anchored landing. */
+/* Narrow desktop — 1024 to 1279px. Same ladder, one rung lower to start with,
+   because the narrative column here is ~150px narrower than on a wide screen and
+   the same three paragraphs run several lines longer. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #about.section--fit { padding-top: clamp(1.5rem, 2.6vw, 2.25rem); }
+  #about .section__kicker { margin-bottom: var(--space-3xs); }
+  #about .section__head { margin-bottom: var(--space-2xs); }
+  #about .section__title { font-size: clamp(1.375rem, 2.1vw, 1.75rem); }
+  #about .about { row-gap: var(--space-xs); --about-gap: var(--space-sm); column-gap: var(--about-gap); grid-template-columns: 8.75rem minmax(0, 1fr) 9.5rem; }
+  #about .about__side { gap: var(--space-xs); }
+  #about .about__media { max-width: 8.75rem; }
+  #about .about__body { font-size: 1.0625rem; line-height: 1.5; }
+  #about .about__body p + p { margin-top: .55em; }
+  #about .impact__figure { font-size: 1.625rem; }
+  #about .impact__caption { font-size: .6875rem; line-height: 1.32; }
+  #about .impact__list { gap: var(--space-2xs); }
+  #about .tools { padding-top: var(--space-xs); }
+  #about .toolgroups { row-gap: var(--space-2xs); }
+  #about .applied__inner { padding-block: 1.6875rem; }
+  #about .applied__title { font-size: 1.1875rem; }
+  #about .applied__icon svg { width: 1.75rem; }
+}
+
+/* Step 3 — a laptop-height window. Height comes out of spacing and the supporting
+   columns; the narrative holds at body size, because the three paragraphs are what
+   this section is for. */
+@media (min-width: 1024px) and (max-height: 770px) {
+  #about.section--fit { padding-top: var(--space-sm); }
+  #about .section__title { font-size: clamp(1.375rem, 2.1vw, 1.75rem); }
+  #about .section__head { margin-bottom: var(--space-2xs); }
+  #about .about { row-gap: var(--space-xs); --about-gap: var(--space-sm); column-gap: var(--about-gap); grid-template-columns: 8.75rem minmax(0, 1fr) 9.5rem; }
+  #about .about__media { max-width: 8.75rem; }
+  #about .about__side { gap: var(--space-xs); }
+  #about .about__body { font-size: 1.0625rem; line-height: 1.5; }
+  #about .about__body p + p { margin-top: .55em; }
+  #about .impact__figure { font-size: 1.625rem; }
+  #about .impact__caption { font-size: .6875rem; line-height: 1.32; }
+  #about .impact__list { gap: var(--space-2xs); }
+  #about .tools { padding-top: var(--space-xs); }
+  #about .tools__title { margin-bottom: .26rem; }
+  #about .toolgroup__label { margin-bottom: .26rem; }
+  #about .toolgroup__list { --tg-list-lh: 1.34; }
+  #about .toolgroup__desc { --tg-desc-lh: 1.3; margin-top: .2rem; }
+  #about .toolgroups { row-gap: var(--space-2xs); }
+  #about .applied__inner { padding-block: 1.5625rem; }
+  #about .applied__title { font-size: 1.1875rem; }
+  #about .applied__desc { font-size: .75rem; line-height: 1.38; }
+  #about .applied__icon svg { width: 1.5rem; }
+}
+
+/* Step 4 — the floor. A 1366x768 or 1280x800 laptop leaves a viewport near 660px
+   once the browser chrome is counted, and this is what keeps the whole landing on
+   screen there. It is the last step: below roughly a 640px viewport the block no
+   longer fits under the anchor script's viewport-minus-93 ceiling, and the landing
+   falls back to a top-anchored one rather than a centred one. */
+@media (min-width: 1024px) and (max-height: 710px) {
+  #about.section--fit { padding-top: var(--space-xs); }
+  #about .section__head { margin-bottom: 0; }
+  #about .about { row-gap: var(--space-2xs); }
+  #about .about__body { line-height: 1.42; }
+  #about .about__body p + p { margin-top: .4em; }
+  #about .about__side { gap: var(--space-2xs); }
+  #about .impact__figure { font-size: 1.5rem; }
+  #about .impact__list { gap: var(--space-3xs); }
+  #about .tools { padding-top: var(--space-2xs); }
+  #about .tools__title { margin-bottom: .28rem; }
+  #about .toolgroups { row-gap: var(--space-3xs); }
+  #about .applied__inner { padding-block: 1.25rem; }
+  #about .applied__icon svg { width: 1.375rem; }
+  #about .applied__title { font-size: 1.125rem; }
+  #about .applied__desc { line-height: 1.32; }
+  #about .section__title { font-size: 1.375rem; }
+  /* the floor for Tools: the leading is at the bottom of the specified range and the
+     gaps are at their tightest, but no type size moves */
+  #about .toolgroup__label { margin-bottom: .22rem; }
+  #about .toolgroup__list { --tg-list-lh: 1.3; }
+  #about .toolgroup__desc { --tg-desc-lh: 1.28; margin-top: .16rem; }
+}
+
+/* Narrow desktop on a short window: the first label wraps here, so Tools carries an
+   extra line and the band needs the extra padding to stay the taller of the two. */
+@media (min-width: 1024px) and (max-width: 1279px) and (max-height: 770px) {
+  #about .section__head { margin-bottom: var(--space-3xs); }
+  #about .section__title { font-size: 1.375rem; }
+  #about .about__body { font-size: 1rem; line-height: 1.38; }
+  #about .about__body p + p { margin-top: .38em; }
+  #about .tools__title { margin-bottom: .22rem; }
+  #about .impact__figure { font-size: 1.5rem; }
+  #about .impact__list { gap: var(--space-3xs); }
+  #about .tools { padding-top: var(--space-2xs); }
+  #about .toolgroups { row-gap: var(--space-3xs); }
+  #about .applied__inner { padding-block: 1.9375rem; }
+}
+
+/* ===== Tools height ladder =====================================================
+   Two rungs, and they sit AFTER every About height regime on purpose. Those regimes
+   each carried their own Tools declarations, and because they come earlier in the file
+   a shorter window could end up with a LOOSER band than a taller one — measured at
+   122px on a 900px window against 127px on an 820px one. Keeping the band's height
+   behaviour in one place, last, removes that.
+
+   Gaps and leading only: no type size moves at any height, and no other zone of About
+   is touched by either rung. */
+@media (min-width: 1024px) and (max-height: 920px) {
+  #about .tools { padding-top: var(--space-xs); }
+  #about .tools__title { margin-bottom: .28rem; }
+  #about .toolgroup__label { margin-bottom: .26rem; }
+  #about .toolgroup__list { --tg-list-lh: 1.32; }
+  #about .toolgroup__desc { --tg-desc-lh: 1.3; margin-top: .18rem; }
+}
+@media (min-width: 1024px) and (max-height: 840px) {
+  #about .tools__title { margin-bottom: .22rem; }
+  #about .toolgroup__label { margin-bottom: .2rem; }
+  #about .toolgroup__list { --tg-list-lh: 1.28; }
+  #about .toolgroup__desc { --tg-desc-lh: 1.26; margin-top: .14rem; }
+}
+
+/* ===== Applied Project Management — the secondary band under About =====
+   Deliberately quiet. The hierarchy is Selected Work first and applied coursework
+   second, so this reads as a footnote to About rather than as a section of its own:
+   no card, no shadow, no border box. It is separated by one hairline and the
+   slightest shift of paper, and it runs full-bleed because it sits outside the
+   container — #about therefore carries no bottom padding, so the band ends the
+   section flush. It is also outside .about-composition on purpose, so the
+   "click About and see all of it" guarantee is untouched. */
+#about { padding-bottom: 0; --tools-air: clamp(1.5rem, 2.6vw, 2rem); }
+
+/* Clicking About now has to land the composition AND the band in one screen, so
+   the head gives back what it can without touching the title or the kicker. */
+#about .section__head { margin-bottom: clamp(.875rem, 1.6vw, 1.25rem); }
+
+/* Round 22: the hierarchy inside About is (1) the main content, (2) this band,
+   (3) Tools. The band therefore has to read as clearly more present than Tools, and
+   the difference is made with whitespace and composition — its type is untouched.
+   Its vertical padding is never to be reduced to buy About landing height; the pixels
+   for that come from the section's own spacing instead. */
+.applied {
+  margin-top: var(--tools-air);      /* the same air that opens Tools closes it */
+  background: var(--paper-alt);
+  border-top: 1px solid var(--line);
+}
+
+.applied__inner {
+  display: grid;
+  gap: var(--space-sm);
+  align-items: center;
+  padding-block: clamp(1.625rem, 2.8vw, 2.375rem);
+}
+
+/* Stacked layouts: Tools becomes two columns and then one, so it is naturally tall
+   there and the band cannot out-measure it without becoming absurd. It keeps its
+   generous padding so it still reads as the more present of the two. */
+@media (max-width: 1023px) {
+  .applied__inner { padding-block: clamp(1.75rem, 4vw, 2.5rem); }
+}
+
+@media (min-width: 900px) {
+  .applied__inner {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: clamp(1.375rem, 2.6vw, 2.25rem);
+  }
+  /* the rule belongs to the call to action, so it only exists once the three
+     zones are side by side */
+  .applied__cta {
+    border-left: 1px solid var(--line-strong);
+    padding-left: clamp(1.375rem, 2.6vw, 2.25rem);
+  }
+}
+
+.applied__icon { color: var(--accent); display: block; justify-self: start; }
+.applied__icon svg { width: 2rem; height: auto; display: block; }
+@media (max-width: 899px) { .applied__icon svg { width: 1.875rem; } }
+
+.applied__kicker {
+  display: block;
+  font-size: var(--fs-label);
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: var(--space-2xs);   /* kicker sits clear of the title */
+}
+
+.applied__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1875rem, 1.9vw, 1.4375rem);   /* 23px at 1440 — round 23 */
+  line-height: 1.22;
+  margin: 0 0 .34rem;             /* a little more air under the certificate name */
+  color: var(--ink);
+}
+
+.applied__desc {
+  margin: 0;
+  font-size: .8125rem;            /* 13px — round 23 */
+  line-height: 1.45;
+  color: var(--ink-soft);
+  max-width: 58ch;
+}
+.applied__desc span { color: var(--accent); margin-inline: .15em; }
+
+.applied__cta {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: .55em;
+  font-size: var(--fs-label);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: .18rem;
+  white-space: nowrap;
+}
+.applied__cta:hover,
+.applied__cta:focus-visible { color: var(--accent-hover); }
+.applied__arrow { transition: transform var(--dur) var(--ease); }
+.applied__cta:hover .applied__arrow { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) { .applied__arrow { transition: none; } }
+@media (min-width: 900px) { .applied__cta { justify-self: end; } }
+
+/* ===== Applied Project Management — the secondary page =====
+   Same header, same palette, same type. It complements the professional work and
+   must never compete with it, so it opens with a Learning & Development kicker and
+   states plainly that this is coursework, not client work. */
+
+.apm-note {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  padding: clamp(1rem, 2vw, 1.375rem) clamp(1.125rem, 2.2vw, 1.625rem);
+  background: var(--paper-alt);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.apm-note p { margin: 0; font-size: var(--fs-sm); line-height: 1.62; color: var(--ink-soft); }
+.apm-note p + p { margin-top: var(--space-2xs); }
+.apm-note strong { color: var(--ink); font-weight: 500; }
+
+/* The artifact gallery is modular so entries can be added one at a time as the
+   coursework is finished. Nothing is listed here that does not exist — see the
+   template comment in applied-project-management.html. */
+.artifacts {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 2.4vw, 2rem);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+@media (min-width: 640px)  { .artifacts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .artifacts { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.artifact { display: flex; flex-direction: column; }
+
+.artifact__media {
+  margin: 0 0 var(--space-sm);
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--paper-alt);
+}
+.artifact__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform var(--dur) var(--ease);
+}
+.artifact:hover .artifact__media img { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) { .artifact__media img { transition: none; } }
+
+.artifact__kind {
+  display: block;
+  font-size: var(--fs-label);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: var(--space-3xs);
+}
+
+.artifact__name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1875rem, 1.8vw, 1.375rem);
+  line-height: 1.26;
+  margin: 0 0 .35rem;
+}
+
+.artifact__desc {
+  margin: 0 0 var(--space-sm);
+  font-size: .8125rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.artifact__link {
+  margin-top: auto;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  font-size: var(--fs-label);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: .15rem;
+}
+.artifact__link:hover,
+.artifact__link:focus-visible { color: var(--accent-hover); }
+
+/* The honest empty state. It is not a placeholder for missing content — it is the
+   content until an artifact actually exists. Delete it once .artifacts has entries. */
+.artifacts-empty {
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-md);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  text-align: center;
+}
+.artifacts-empty__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1875rem, 2vw, 1.5rem);
+  margin: 0 0 var(--space-2xs);
+}
+.artifacts-empty p {
+  margin: 0 auto;
+  max-width: 52ch;
+  font-size: var(--fs-sm);
+  line-height: 1.62;
+  color: var(--ink-soft);
+}
+
+/* The closing line back to the professional work, so the page never reads as the
+   main event */
+.apm-back {
+  margin-top: clamp(2rem, 4vw, 3.25rem);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm) var(--space-md);
+  justify-content: space-between;
+}
+.apm-back p { margin: 0; font-size: var(--fs-sm); color: var(--ink-faint); max-width: 56ch; }
+
+/* ===== About: distributed vertical-space trims ==================================
+   Zero scroll is the requirement: clicking About must land the whole block — title
+   through the end of the Applied band — inside the viewport, at 1440x820 and
+   1024x700 included. Two things are off limits in getting there: the Applied band's
+   vertical space, which has to stay the more present of the two, and Tools, which is
+   already at the compact scale she set in round 21.
+
+   So the pixels come from About's own empty vertical space, spread across four
+   places rather than taken out of one: the gap under the section head, the grid gap,
+   the gap inside the portrait column, the gap between the narrative's paragraphs,
+   the gap between the impact figures, and the air above the Tools rule. No type size
+   moves, no line-height moves, no column width moves, and no block loses its place
+   in the hierarchy.
+
+   These blocks MUST stay at the end of the stylesheet. `#about .section__head` is
+   given a blanket margin further up (see "Clicking About now has to land..."), which
+   silently overrode the same property in every height regime — the reason an earlier
+   version of this fix measured as having no effect at all. Anything that needs to
+   beat that blanket rule has to come after it. */
+
+/* A window with room to spare, but not quite enough: 1440x900, 1462x895, 1600x900. */
+@media (min-width: 1280px) and (max-height: 940px) and (min-height: 881px) {
+  #about { --tools-air: clamp(1.25rem, 2vw, 1.625rem); }
+  #about .section__head { margin-bottom: var(--space-xs); }
+  #about .about { --about-gap: clamp(1.5rem, 2.4vw, 2rem); }
+  #about .about__side { gap: var(--space-sm); }
+  #about .about__body p + p { margin-top: .62em; }
+  #about .impact__list { gap: var(--space-xs); }
+}
+
+/* The 800-880 band, where only the first height regime applies: 1440x860 to 1440x805. */
+@media (min-width: 1280px) and (max-height: 880px) and (min-height: 801px) {
+  #about { --tools-air: var(--space-sm); }
+  #about .section__head { margin-bottom: var(--space-2xs); }
+  #about .about { --about-gap: var(--space-md); }
+  #about .about__side { gap: var(--space-2xs); }
+  #about .about__body p + p { margin-top: .46em; }
+  #about .impact__list { gap: var(--space-2xs); }
+}
+
+/* The 711-800 band: 1440x780 and 1400x780, where the first two height regimes apply. */
+@media (min-width: 1280px) and (max-height: 800px) and (min-height: 711px) {
+  #about { --tools-air: var(--space-xs); }
+  #about .section__head { margin-bottom: var(--space-2xs); }
+  #about .about { --about-gap: var(--space-sm); }
+  #about .about__side { gap: var(--space-2xs); }
+  #about .about__body p + p { margin-top: .4em; }
+  #about .impact__list { gap: var(--space-3xs); }
+}
+
+/* Wide and short: 1280x660 and below. */
+@media (min-width: 1280px) and (max-height: 710px) {
+  #about { --tools-air: var(--space-2xs); }
+  #about .section__head { margin-bottom: var(--space-3xs); }
+  #about .about { --about-gap: var(--space-2xs); }
+  #about .about__side { gap: var(--space-3xs); }
+  #about .about__body p + p { margin-top: .3em; }
+  #about .impact__list { gap: 2px; }
+}
+
+/* Narrow desktop at any height: the container is much narrower here, so the band sits
+   on a tighter pair of gaps than it does on a wide screen. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  #about { --tools-air: var(--space-sm); }
+}
+
+/* Narrow desktop on a short window: 1024x720 and 1024x700. The narrative column is
+   the tallest one here, so its paragraph gaps are where most of this comes from. */
+@media (min-width: 1024px) and (max-width: 1279px) and (max-height: 730px) {
+  /* the tightest pair of gaps on the site, and still equal on both sides of Tools */
+  #about { --tools-air: var(--space-3xs); }
+  #about .section__head { margin-bottom: 0; }
+  #about .about { --about-gap: var(--space-2xs); }
+  #about .about__side { gap: var(--space-3xs); }
+  #about .about__body p + p { margin-top: .16em; }
+  #about .impact__list { gap: 2px; }
+}
+
+/* =============================================================
+   PHASE 2.1 — Project pages, area pages and the All Projects
+   depth signal. Added in the local pilot only; nothing deployed.
+   Every value comes from the existing tokens: no new hue, no new
+   face, no new component vocabulary. Prefixes `pp-` (project
+   page), `ar-` (area page) and `crumbs` keep this block from
+   colliding with anything above it.
+   ============================================================= */
+
+/* ---- Orientation strip: where am I. On every project and area page. ---- */
+.crumbs { border-bottom: 1px solid var(--line); background: var(--paper); }
+.crumbs__inner {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem .65rem;
+  padding-block: .85rem;
+  font-size: var(--fs-label); letter-spacing: .11em; text-transform: uppercase;
+}
+.crumbs a {
+  color: var(--ink-soft); text-decoration: none;
+  border-bottom: 1px solid transparent; padding-bottom: 1px;
+  transition: color .24s var(--ease), border-color .24s var(--ease);
+}
+.crumbs a:hover, .crumbs a:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
+.crumbs__sep { color: var(--line-strong); }
+.crumbs__here { color: var(--ink); font-weight: 500; }
+
+/* ---- Project page hero ---- */
+.pp-hero { padding-block: clamp(2.75rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem); }
+.pp-eyebrow {
+  display: flex; align-items: center; gap: .7rem; margin: 0 0 1.1rem;
+  font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500;
+}
+.pp-eyebrow::before { content: ""; width: 34px; height: 1px; background: var(--accent); flex: none; }
+.pp-title {
+  font-family: var(--font-display); font-weight: 300; font-size: var(--fs-h1);
+  line-height: 1.04; letter-spacing: -.01em; margin: 0; text-wrap: balance; max-width: 21ch;
+}
+.pp-standfirst {
+  font-size: var(--fs-lead); line-height: 1.62; color: var(--ink-soft);
+  margin: 1.4rem 0 0; max-width: 56ch;
+}
+.pp-meta {
+  display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; margin: 2rem 0 0;
+  padding-top: 1.1rem; border-top: 1px solid var(--line);
+  font-size: var(--fs-sm); color: var(--ink-soft);
+}
+.pp-meta b { font-weight: 500; color: var(--ink); }
+.pp-meta__depth {
+  margin-left: auto; color: var(--accent); font-size: var(--fs-label);
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 500; align-self: center;
+}
+
+/* ---- Project page body ---- */
+.pp-section { padding-block: clamp(3.25rem, 6.5vw, 5.5rem); }
+.pp-section + .pp-section { padding-top: 0; }
+.pp-kicker {
+  font-size: var(--fs-label); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 500; margin: 0 0 1.1rem;
+}
+.pp-measure { max-width: 62ch; margin: 0; }
+
+.contrib { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6rem; max-width: 64ch; counter-reset: c; }
+.contrib li { counter-increment: c; padding-left: 2.6rem; position: relative; line-height: 1.66; }
+.contrib li::before {
+  content: counter(c, decimal-leading-zero); position: absolute; left: 0; top: .28rem;
+  font-family: var(--font-display); font-size: .95rem; color: var(--accent); letter-spacing: .04em;
+}
+.contrib b { font-weight: 500; }
+
+/* ---- Evidence: the visual core of a project page ---- */
+.evidence { display: grid; gap: clamp(2.25rem, 4.5vw, 3.5rem); }
+.evidence figure { margin: 0; }
+.ev__frame {
+  background: var(--paper-alt); border: 1px solid var(--line);
+  padding: clamp(1rem, 2.4vw, 1.75rem); transition: border-color .3s var(--ease);
+}
+.evidence figure:hover .ev__frame { border-color: var(--line-strong); }
+.ev__frame svg, .ev__frame img { display: block; width: 100%; height: auto; }
+.ev__cap { display: grid; gap: .45rem; margin-top: 1rem; max-width: 58ch; }
+.ev__what { font-size: var(--fs-sm); color: var(--ink); margin: 0; line-height: 1.6; }
+.ev__what b { font-weight: 500; }
+.ev__proves { font-size: var(--fs-sm); color: var(--accent); margin: 0; line-height: 1.6; }
+.ev__note {
+  font-size: var(--fs-label); letter-spacing: .06em; color: var(--ink-faint);
+  margin: 0; text-transform: uppercase;
+}
+
+/* ---- Result: the one raised block on a project page ---- */
+.pp-result {
+  background: var(--paper-alt);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding-block: clamp(2.5rem, 5vw, 3.75rem);
+}
+.pp-result__grid { display: grid; gap: clamp(1.75rem, 3.5vw, 3rem); grid-template-columns: 1fr; }
+.pp-result__item h3 {
+  font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3);
+  margin: 0 0 .5rem; line-height: 1.2;
+}
+.pp-result__item p { color: var(--ink-soft); max-width: 46ch; line-height: 1.68; font-size: var(--fs-sm); margin: 0; }
+.pp-result__tag {
+  display: block; font-family: var(--font-sans); font-size: var(--fs-label);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: .55rem; font-weight: 500;
+}
+
+/* ---- Onward navigation. No project page ends without a next action. ---- */
+.onward { padding-block: clamp(3.25rem, 6.5vw, 5.5rem); }
+.onward__pair {
+  display: grid; gap: 1px; background: var(--line);
+  border-block: 1px solid var(--line); grid-template-columns: 1fr;
+}
+.onward__link {
+  background: var(--paper); text-decoration: none; display: block;
+  padding: clamp(1.4rem, 3vw, 2rem) clamp(1.1rem, 2.5vw, 1.75rem);
+  transition: background .28s var(--ease);
+}
+.onward__link:hover, .onward__link:focus-visible { background: var(--accent-tint); }
+.onward__dir {
+  font-size: var(--fs-label); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-faint); display: block; margin-bottom: .55rem;
+}
+.onward__name {
+  font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 400;
+  line-height: 1.16; display: block; margin-bottom: .5rem;
+}
+.onward__depth { font-size: var(--fs-label); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.onward__link--next { text-align: right; }
+.onward__routes { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin-top: 1.75rem; font-size: var(--fs-sm); }
+.onward__routes a {
+  color: var(--ink-soft); text-decoration: none;
+  border-bottom: 1px solid var(--line-strong); padding-bottom: 2px;
+  transition: color .24s var(--ease), border-color .24s var(--ease);
+}
+.onward__routes a:hover, .onward__routes a:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* ---- All Projects: the depth signal is carried by the CTA, not by a badge ---- */
+.wrow__link--overview { color: var(--ink-soft); }
+.wrow__link--overview:hover, .wrow__link--overview:focus-visible { color: var(--accent); }
+.wrow--compact .wrow__title { font-size: clamp(1.125rem, 1.7vw, 1.3125rem); }
+.wrow__depth {
+  display: inline-block; margin-top: .9rem;
+  font-size: var(--fs-label); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint);
+}
+
+@media (min-width: 760px) {
+  .pp-result__grid { grid-template-columns: 1fr 1fr; }
+  .onward__pair { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 759px) {
+  .pp-meta__depth { margin-left: 0; width: 100%; }
+  .onward__link--next { text-align: left; }
+}
+
+/* =============================================================
+   CASE-SHOWCASE SYSTEM (sh-) — Phase 2.1, session 22, third pass.
+   The area page: the evidence is the page, the words are its caption.
+
+   THE THREE RULES THIS VERSION IS BUILT ON, all hers:
+
+   1. THE TYPE IS SMALL ON PURPOSE. Everything from the project title
+      down was scaled back so the evidence dominates. Do not grow the
+      title back to "balance" the composition — the imbalance is the
+      design.
+   2. THE EVIDENCE IS A MOSAIC OF FRAMED SHOTS at four widths — full,
+      wide, half, third — composed per project so the scroll changes
+      rhythm: one across, then two, then one, then three. Some captions
+      sit beside the frame instead of under it, for the same reason.
+   3. "About the project" DOES NOT OVERLAY THE PAGE. It splits it: the
+      evidence takes one half, the report the other, both at the same
+      type scale and neither dimmed. Equal weight is the point, so
+      there is no scrim, no scroll lock and no modal.
+
+   Progressive enhancement: the markup is <details>/<summary>, so with
+   the script off the report is an ordinary block that expands under the
+   project. The script lifts the report out into the second column.
+   ============================================================= */
+
+/* ---- Area hero ---- */
+.sh-hero { padding-block: clamp(1.5rem, 2.6vw, 2.25rem) clamp(.75rem, 1.5vw, 1rem); }
+.sh-hero__back {
+  display: inline-flex; align-items: center; gap: .5rem; font-size: var(--fs-sm);
+  color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid transparent;
+  transition: color .24s var(--ease), border-color .24s var(--ease);
+}
+.sh-hero__back:hover, .sh-hero__back:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
+.sh-hero__title {
+  margin: .85rem 0 0; font-family: var(--font-display); font-weight: 300;
+  font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.04; letter-spacing: -.012em;
+}
+.sh-hero__rule { width: 52px; height: 1px; background: var(--accent); margin: 1rem 0; }
+.sh-hero__lede { margin: 0; font-size: var(--fs-body); color: var(--ink-soft); line-height: 1.6; max-width: 54ch; }
+
+/* ---- The cases ---- */
+.sh-cases { list-style: none; margin: 0; padding: 0; }
+.sh-case { padding-block: clamp(2rem, 4vw, 3.5rem); scroll-margin-top: 92px; }
+.sh-case + .sh-case { padding-top: 0; }
+.sh-case + .sh-case > .container { border-top: 1px solid var(--line); padding-top: clamp(2rem, 4vw, 3.5rem); }
+
+/* ---- The band. Small type; the control holds the page's left edge. ---- */
+.sh-band { display: grid; gap: clamp(1rem, 2vw, 1.5rem); margin-bottom: clamp(1.25rem, 2.4vw, 1.75rem); }
+.sh-eyebrow {
+  display: inline-flex; align-items: center; gap: .5rem; margin: 0;
+  font-size: .625rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+}
+.sh-eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent); flex: none; }
+.sh-title {
+  margin: .6rem 0 0; font-family: var(--font-display); font-weight: 400;
+  line-height: 1.12; letter-spacing: -.004em; text-wrap: balance;
+  font-size: clamp(1.375rem, 2.1vw, 1.875rem);
+}
+.sh-title a {
+  color: inherit; text-decoration: none;
+  background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat;
+  transition: background-size .3s var(--ease);
+}
+.sh-title a:hover, .sh-title a:focus-visible { background-size: 100% 1px; }
+.sh-org { margin: .5rem 0 0; font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.sh-sum { margin: .7rem 0 0; font-size: var(--fs-sm); color: var(--ink-soft); line-height: 1.62; max-width: 60ch; }
+
+/* ---- The control ---- */
+.sh-about { display: block; }
+.sh-pill {
+  display: inline-flex; align-items: center; gap: .7rem; cursor: pointer; list-style: none;
+  font-family: var(--font-sans); font-size: .625rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+  color: var(--ink); background: var(--paper-alt);
+  border: 1px solid var(--line); padding: .7rem 1rem;
+  transition: background .24s var(--ease), border-color .24s var(--ease), color .24s var(--ease);
+}
+.sh-pill::-webkit-details-marker { display: none; }
+.sh-pill::marker { content: ""; }
+/* The plus is drawn, not typed, so it can rotate into a cross. */
+.sh-pill__sign { position: relative; width: 10px; height: 10px; flex: none; transition: transform .32s var(--ease); }
+.sh-pill__sign::before, .sh-pill__sign::after {
+  content: ""; position: absolute; left: 0; top: 50%; width: 10px; height: 1px; background: currentColor;
+}
+.sh-pill__sign::after { transform: rotate(90deg); }
+.sh-pill:hover, .sh-pill:focus-visible { background: var(--accent-tint); border-color: var(--line-strong); }
+.sh-about[open] > .sh-pill,
+.sh-case.is-split .sh-pill { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+.sh-about[open] > .sh-pill .sh-pill__sign,
+.sh-case.is-split .sh-pill .sh-pill__sign { transform: rotate(45deg); }
+.sh-pill .sh-off { display: none; }
+.sh-about[open] > .sh-pill .sh-on,
+.sh-case.is-split .sh-pill .sh-on { display: none; }
+.sh-about[open] > .sh-pill .sh-off,
+.sh-case.is-split .sh-pill .sh-off { display: inline; }
+
+/* ---- The stage: the mosaic, and the report beside it when open ---- */
+.sh-stage { display: grid; gap: clamp(1.5rem, 3vw, 2.75rem); align-items: start; }
+
+/* ---- The mosaic. Six tracks, so a cell can take 6, 4, 3 or 2 of them. ---- */
+.sh-mosaic {
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(.75rem, 1.5vw, 1.25rem);
+}
+.sh-cell { grid-column: span 6; }
+
+/* ---- A framed shot. The frame is the studio: a mat, a hairline, and the
+        evidence inside it. Photographs fill it; documents sit on the mat. ---- */
+.sh-shot { margin: 0; }
+.sh-shot__frame {
+  position: relative; display: block; overflow: hidden;
+  background: var(--wm-ivory); border: 1px solid var(--line);
+  transition: border-color .28s var(--ease);
+  aspect-ratio: 4 / 3;
+}
+.sh-shot:hover .sh-shot__frame { border-color: var(--line-strong); }
+.sh-shot__frame img, .sh-shot__frame svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* A document is 4:3 — the artifacts are drawn on a 320x240 frame — so a
+   doc shot keeps that ratio at every cell width and everywhere in the
+   split. Letting it inherit the cell ratio left the drawing floating in a
+   field of mat, which reads as an empty box rather than as evidence. */
+.sh-shot--doc .sh-shot__frame { background: var(--paper-alt); padding: clamp(.5rem, 1vw, .85rem); aspect-ratio: 4 / 3; }
+.sh-shot--doc .sh-shot__frame svg, .sh-shot--doc .sh-shot__frame img { object-fit: contain; background: var(--paper); }
+.sh-shot__cap { margin: .65rem 0 0; }
+.sh-shot__name { margin: 0; font-size: .8125rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
+.sh-shot__line { margin: .2rem 0 0; font-size: .75rem; color: var(--ink-soft); line-height: 1.5; max-width: 46ch; }
+
+/* The caption beside the frame instead of under it — used sparingly, to
+   change the rhythm of the scroll rather than decorate. */
+.sh-shot--aside { display: grid; gap: clamp(.9rem, 2vw, 1.75rem); align-items: end; }
+.sh-shot--aside .sh-shot__cap { margin-top: 0; }
+
+/* ---- The report ---- */
+.sh-panel { margin-top: clamp(1.25rem, 2.5vw, 1.75rem); border-top: 1px solid var(--line-strong); padding-top: 1.5rem; }
+.sh-rep .sh-rep__title {
+  margin: 0 0 .25rem; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(1.25rem, 1.9vw, 1.5rem); line-height: 1.14; color: var(--ink);
+}
+.sh-rep .sh-rep__org { margin: 0 0 1.5rem; font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.sh-rep h4 {
+  margin: 0 0 .45rem; font-family: var(--font-sans); font-size: .625rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+}
+.sh-rep p { margin: 0 0 1.35rem; font-size: var(--fs-sm); color: var(--ink-soft); line-height: 1.68; max-width: 52ch; }
+.sh-rep ul { list-style: none; margin: 0 0 1.35rem; padding: 0; display: grid; gap: .5rem; }
+.sh-rep li {
+  position: relative; padding-left: 1rem; font-size: var(--fs-sm);
+  color: var(--ink-soft); line-height: 1.56; max-width: 52ch;
+}
+.sh-rep li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 1px; background: var(--accent); }
+.sh-rep__result { border-top: 1px solid var(--line); padding-top: 1.1rem; }
+.sh-rep__result p { margin-bottom: 0; color: var(--ink); }
+.sh-meta { margin: 1.4rem 0 0; border-top: 1px solid var(--line); padding-top: 1.1rem; display: grid; gap: .6rem; }
+.sh-meta__row { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: .4rem 1rem; align-items: baseline; }
+.sh-meta dt { font-size: .5625rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.sh-meta dd { margin: 0; font-size: .8125rem; color: var(--ink-soft); line-height: 1.5; }
+.sh-meta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.sh-rep__close {
+  display: none; align-items: center; gap: .55rem; margin-bottom: 1.25rem;
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font-family: var(--font-sans); font-size: .625rem; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint);
+  transition: color .24s var(--ease);
+}
+.sh-rep__close::before { content: "\00d7"; font-size: 1rem; line-height: 1; }
+.sh-rep__close:hover, .sh-rep__close:focus-visible { color: var(--ink); }
+
+/* ---- With the script: the report is lifted into the stage and hidden
+        until the project is split. No overlay, no dimming. ---- */
+.js .sh-stage > .sh-panel { display: none; margin-top: 0; border-top: 0; padding-top: 0; }
+.js .sh-case.is-split .sh-stage > .sh-panel { display: block; }
+.js .sh-case.is-split .sh-rep__close { display: inline-flex; }
+
+/* ---- Evidence reel: the artifact that plays instead of sitting there.
+        Reduced motion gets the finished frame, which is why every base
+        style below is the END state. ---- */
+.sh-reel__tag {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .5625rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-faint); background: rgba(250, 247, 244, .82); padding: .28rem .5rem;
+}
+.sh-reel__dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: shPulse 2.4s var(--ease) infinite; }
+@keyframes shPulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+
+/* Reel A — the delivery sequence: five lanes drawing in turn under a playhead. */
+.sh-lane { transform: scaleX(0); transform-origin: left center; transform-box: fill-box; }
+.sh-lane--1 { animation: shLane1 11s linear infinite; }
+.sh-lane--2 { animation: shLane2 11s linear infinite; }
+.sh-lane--3 { animation: shLane3 11s linear infinite; }
+.sh-lane--4 { animation: shLane4 11s linear infinite; }
+.sh-lane--5 { animation: shLane5 11s linear infinite; }
+@keyframes shLane1 { 0% { transform: scaleX(0); } 11% { transform: scaleX(1); } 92% { transform: scaleX(1); opacity: 1; } 97%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes shLane2 { 0%, 16% { transform: scaleX(0); } 29% { transform: scaleX(1); } 92% { transform: scaleX(1); opacity: 1; } 97%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes shLane3 { 0%, 34% { transform: scaleX(0); } 49% { transform: scaleX(1); } 92% { transform: scaleX(1); opacity: 1; } 97%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes shLane4 { 0%, 54% { transform: scaleX(0); } 69% { transform: scaleX(1); } 92% { transform: scaleX(1); opacity: 1; } 97%, 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes shLane5 { 0%, 74% { transform: scaleX(0); } 84% { transform: scaleX(1); } 92% { transform: scaleX(1); opacity: 1; } 97%, 100% { transform: scaleX(1); opacity: 0; } }
+.sh-play { transform-box: view-box; animation: shPlay 11s linear infinite; }
+@keyframes shPlay { 0% { transform: translateX(0); opacity: 0; } 4% { opacity: 1; } 88% { transform: translateX(720px); opacity: 1; } 96%, 100% { transform: translateX(720px); opacity: 0; } }
+.sh-stamp { opacity: 1; }
+.sh-stamp--anim { animation: shStamp 11s linear infinite; }
+@keyframes shStamp { 0%, 84% { opacity: 0; } 90%, 94% { opacity: 1; } 98%, 100% { opacity: 0; } }
+
+/* Reel B — the cutting optimisation: parts landing until the offcut is left. */
+.sh-part { opacity: 1; }
+.sh-part--anim { animation: shPart 9s var(--ease) infinite; }
+@keyframes shPart {
+  0% { opacity: 0; transform: translateY(-7px); }
+  7% { opacity: 1; transform: none; }
+  74% { opacity: 1; transform: none; }
+  84%, 100% { opacity: 0; transform: none; }
+}
+.sh-offcut { opacity: 1; }
+.sh-offcut--anim { animation: shOffcut 9s var(--ease) infinite; }
+@keyframes shOffcut { 0%, 58% { opacity: 0; } 68%, 74% { opacity: 1; } 84%, 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-reel__dot, .sh-lane, .sh-play, .sh-stamp--anim, .sh-part--anim, .sh-offcut--anim { animation: none !important; }
+  .sh-lane { transform: scaleX(1); }
+  .sh-play { opacity: 0; }
+}
+
+/* ---- The section break before the rest of the area ---- */
+.sh-more { padding-top: clamp(1.75rem, 3.5vw, 2.75rem); }
+.sh-more__h {
+  margin: 0; padding-bottom: .85rem; border-bottom: 1px solid var(--line);
+  font-family: var(--font-sans); font-size: .625rem; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--ink-faint);
+}
+.sh-more + .sh-cases > .sh-case:first-child > .container { border-top: 0; padding-top: clamp(2rem, 4vw, 3.5rem); }
+
+/* ---- Weights. The difference is evidence and air, not type size. ---- */
+.sh-case--more .sh-title { font-size: clamp(1.1875rem, 1.6vw, 1.4375rem); }
+.sh-case--compact { padding-block: clamp(1.75rem, 3.2vw, 2.5rem); }
+.sh-case--compact .sh-title { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; letter-spacing: -.004em; }
+.sh-case--compact + .sh-case--compact > .container { padding-top: clamp(1.75rem, 3.2vw, 2.5rem); }
+
+/* ---- Closing band ---- */
+.sh-foot {
+  background: var(--paper-alt); border-top: 1px solid var(--line);
+  padding-block: clamp(2rem, 4vw, 3rem); margin-top: clamp(2rem, 4vw, 3rem);
+}
+/* the band keeps its paper; what sits in it is the nav at the end of the file */
+
+/* ---- Responsive ---------------------------------------------------- */
+
+/* The mosaic only becomes a mosaic when there is width for it. */
+@media (min-width: 700px) {
+  .sh-cell--full  { grid-column: span 6; }
+  .sh-cell--wide  { grid-column: span 4; }
+  .sh-cell--half  { grid-column: span 3; }
+  .sh-cell--third { grid-column: span 2; }
+
+  /* Each width gets its own crop, so the rhythm changes as well as the size. */
+  .sh-cell--full  .sh-shot__frame { aspect-ratio: 16 / 7; }
+  .sh-cell--wide  .sh-shot__frame { aspect-ratio: 3 / 2; }
+  .sh-cell--half  .sh-shot__frame { aspect-ratio: 4 / 3; }
+  .sh-cell--third .sh-shot__frame { aspect-ratio: 1 / 1; }
+  .sh-cell--reel  .sh-shot__frame { aspect-ratio: 16 / 6; }
+  /* A document keeps its own 4:3 whatever cell it sits in — the cell rules
+     above are the same specificity and come later, so this has to repeat
+     here rather than live with the other .sh-shot--doc declarations. */
+  .sh-shot--doc .sh-shot__frame { aspect-ratio: 4 / 3; }
+
+  .sh-shot--aside { grid-template-columns: minmax(0, 1fr) minmax(0, .44fr); }
+}
+
+
+
+@media (min-width: 1000px) {
+  /* SPLIT: evidence one half, report the other. Equal width, equal weight.
+     The report is sticky so it stays with the evidence being scrolled. */
+  .js .sh-case.is-split .sh-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .js .sh-case.is-split .sh-mosaic { grid-template-columns: minmax(0, 1fr); }
+  .js .sh-case.is-split .sh-cell { grid-column: span 1; }
+  /* One column means one crop: every shot takes the half-page width, and a
+     small one grows into it exactly as a large one is held back to it. */
+  .js .sh-case.is-split .sh-shot__frame { aspect-ratio: 3 / 2; }
+  .js .sh-case.is-split .sh-shot--doc .sh-shot__frame { aspect-ratio: 4 / 3; }
+  .js .sh-case.is-split .sh-cell--reel .sh-shot__frame { aspect-ratio: 16 / 6; }
+  .js .sh-case.is-split .sh-shot--aside { grid-template-columns: minmax(0, 1fr); }
+
+}
+
+@media (max-width: 999px) {
+  /* Below the split width the report simply comes first, under the control. */
+  .js .sh-case.is-split .sh-stage > .sh-panel {
+    order: -1; border-top: 1px solid var(--line-strong); padding-top: 1.25rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .sh-meta__row { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
+}
+
+/* =============================================================
+   sh- ROUND 4 — 16 September 2026. Seven changes, all hers.
+
+   The one that drives the rest: OPENING A PROJECT IS AN EXPANSION,
+   not a panel. The container itself grows from the 1220px measure to
+   the full width of the screen, the evidence and the report widen
+   together, and one page scroll carries both columns — there is no
+   second scrollbar and nothing is sticky except the control.
+
+   THE CONTROL IS THE EXCEPTION, and it is load-bearing: it must stay
+   on screen for the whole project so the reader can close the
+   information from wherever they have scrolled to. That is why the
+   case's container is a two-column grid with the control spanning
+   BOTH rows — a sticky element only travels inside its own grid area,
+   so the area has to be as tall as the project.
+
+   `.sh-band { display: contents }` is what makes that possible without
+   touching the markup: it promotes the title block and the control to
+   grid items of the case, so the control can take a row span the band
+   itself could never give it.
+   ============================================================= */
+
+/* ---- The hairline under the area lede, and less air after it ---- */
+.sh-hero__line { height: 1px; background: var(--line); margin-top: clamp(.9rem, 1.8vw, 1.35rem); }
+.sh-hero { padding-bottom: 0; }
+.sh-case--lead { padding-top: clamp(.9rem, 1.8vw, 1.35rem); }
+
+/* ---- The case as a grid: control rail, then everything else ---- */
+.sh-case > .container {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  row-gap: clamp(1.1rem, 2.2vw, 1.6rem);
+  /* the expansion. A length-to-percentage transition, so the measure
+     grows to the screen instead of snapping to it. */
+  transition: max-width .5s var(--ease);
+}
+.sh-band { margin-bottom: 0; }
+
+@media (min-width: 900px) {
+  .sh-case > .container { grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(1.5rem, 3vw, 2.75rem); }
+  .sh-band { display: contents; }
+  .sh-band__text { grid-column: 2; grid-row: 1; margin: 0; }
+  .sh-stage { grid-column: 2; grid-row: 2; }
+  .sh-band__act {
+    grid-column: 1; grid-row: 1 / span 2;
+    justify-self: start; align-self: start;
+    /* sits on the project title's own line, and stays with the project */
+    /* Aligned with the PROJECT TITLE, not with the top of the row: the
+       featured case carries an eyebrow above its title and the others do
+       not, so the offset is added only there. */
+    /* Measured, not guessed: the pill sat 10px above the title box in the
+       plain cases and 18px above it in the featured one, which carries an
+       eyebrow. These two values put the two top edges on the same line. */
+    margin-top: .625rem;
+    position: sticky; top: calc(var(--header-h) + 1.1rem); z-index: 3;
+  }
+}
+
+/* ---- The expansion ---- */
+.js .sh-case.is-split > .container { max-width: 100%; }
+.js .sh-case.is-split .sh-cell { animation: shGrow .55s var(--ease) both; }
+@keyframes shGrow {
+  from { opacity: .45; transform: scale(.982); }
+  to   { opacity: 1; transform: none; }
+}
+.js .sh-case.is-split .sh-stage > .sh-panel { animation: shRise .55s var(--ease) both; }
+@keyframes shRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* One scroll for both columns: the report is part of the page, not a
+   pane of its own. Nothing here may set position/overflow on it. */
+@media (min-width: 1000px) {
+  .js .sh-case.is-split .sh-stage > .sh-panel { position: static; max-height: none; overflow: visible; }
+}
+
+/* ---- The sign reads + when closed and − when open ---- */
+.sh-about[open] > .sh-pill .sh-pill__sign,
+.sh-case.is-split .sh-pill .sh-pill__sign { transform: none; }
+.sh-about[open] > .sh-pill .sh-pill__sign::after,
+.sh-case.is-split .sh-pill .sh-pill__sign::after { opacity: 0; }
+.sh-pill__sign::after { transition: opacity .28s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .sh-case.is-split .sh-cell,
+  .js .sh-case.is-split .sh-stage > .sh-panel { animation: none; }
+  .sh-case > .container { transition: none; }
+}
+
+@media (min-width: 900px) {
+  .sh-case--lead .sh-band__act { margin-top: 2.425rem; }
+}
+
+/* =============================================================
+   sh- ROUND 5 — 16 September 2026.
+
+   THE PAGE IS NOW FULL WIDTH. `.sh-page` drops the 1220px measure and
+   sets a 1cm margin each side, header and footer included so nothing
+   is left hanging at a different alignment. Everything on the page —
+   the area title, the project block, the control and the evidence —
+   now starts and ends on the same two lines.
+
+   THE CONTROL IS ON THE RIGHT. She had it moved to the left in round 3
+   and back to the right here; **the newest instruction is the one that
+   stands**. It is flush with the right margin, on the project title's
+   own line, and still sticky so it can be reached from anywhere in the
+   project's scroll.
+
+   CONSEQUENCE, AND IT IS DELIBERATE: with the page already full width,
+   opening a project no longer widens the container — the expansion is
+   now carried by the mosaic reflowing and by the two animations, not by
+   the measure growing. The max-width transition is kept because it
+   still applies below 1220px-wide screens.
+   ============================================================= */
+
+.sh-page .container {
+  max-width: none;
+  /* 1cm is her ceiling; it steps down on a phone, where 1cm of a 380px
+     screen is a fifth of the line. */
+  padding-inline: clamp(1rem, 2.6vw, 1cm);
+}
+
+/* ---- The project band: text from the left margin, control on the right ---- */
+@media (min-width: 900px) {
+  .sh-case > .container { grid-template-columns: minmax(0, 1fr) auto; }
+  .sh-band__text { grid-column: 1; grid-row: 1; }
+  /* The evidence runs the whole width, margin to margin — it spans both
+     tracks, so the control does not shorten it. */
+  .sh-stage { grid-column: 1 / -1; grid-row: 2; }
+  .sh-band__act {
+    grid-column: 2; grid-row: 1 / span 2;
+    justify-self: end; align-self: start; z-index: 3;
+    /* The area spans both rows so a sticky control can travel the whole
+       project, but it only BECOMES sticky once the project is open: that
+       is the only time it has to be reachable, and floating it over the
+       evidence the rest of the time would be clutter over the work. */
+    position: static; top: calc(var(--header-h) + 1.1rem);
+  }
+  .js .sh-case.is-split .sh-band__act { position: sticky; }
+}
+
+/* ---- One or two points up on the whole project block, and it runs
+        the length of the page instead of sitting in a column ---- */
+.sh-eyebrow { font-size: .6875rem; }
+.sh-title { font-size: clamp(1.5rem, 2.4vw, 2.125rem); }
+.sh-org { font-size: .6875rem; margin-top: .55rem; }
+.sh-sum {
+  font-size: .9375rem; line-height: 1.6; margin-top: .8rem;
+  /* wide enough to read as running across the page, short enough that a
+     line is still a line and not a paragraph-wide ribbon */
+  max-width: 88ch;
+}
+.sh-case--more .sh-title { font-size: clamp(1.3125rem, 1.8vw, 1.625rem); }
+.sh-case--compact .sh-title { font-size: 1.0625rem; }
+
+/* The control keeps its own small scale: it is a control, not a heading. */
+.sh-pill { font-size: .625rem; }
+
+/* =============================================================
+   sh- ROUND 6 — 16 September 2026. The expansion is the whole point.
+
+   CLOSED, the project page keeps the site's own measure, so it is
+   coherent with every other page. OPEN, and only then, it breaks out:
+   the margin drops to 1cm, the evidence and the report take a half
+   each from margin to margin, and the project's own title block is
+   HIDDEN — the report already carries the title, the organisation and
+   the summary, so leaving both would print the same thing twice. With
+   it gone, the two columns rise to where the title was.
+
+   The report is also scaled up in this round. It is no longer a
+   caption to the evidence: it runs to the page margin and reads at
+   17px, so the eye gives it the same weight as the photography.
+   ============================================================= */
+
+/* The page keeps the site measure when closed — this undoes round 5's
+   page-wide override, which had made every container full width. */
+.sh-page .container { max-width: var(--maxw); padding-inline: var(--gutter); }
+
+/* ...and the expansion is what breaks the measure, with both the width
+   and the margin animated so it reads as one movement. */
+.sh-case > .container { transition: max-width .5s var(--ease), padding-inline .5s var(--ease); }
+.js .sh-case.is-split > .container {
+  max-width: none;
+  padding-inline: clamp(1rem, 2.6vw, 1cm);
+}
+
+/* The project's own title block steps aside while the report is open. */
+.js .sh-case.is-split .sh-band__text { display: none; }
+
+/* ---- The report, given the weight of the images ---- */
+.js .sh-case.is-split .sh-rep .sh-rep__title {
+  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+  margin-bottom: .35rem;
+}
+.sh-rep .sh-rep__org { font-size: .6875rem; margin-bottom: 1.75rem; }
+.sh-rep h4 { font-size: .6875rem; margin-bottom: .6rem; }
+.sh-rep p {
+  /* runs to the page margin: the column edge IS the measure now */
+  max-width: none;
+  font-size: 1.0625rem; line-height: 1.74; margin-bottom: 1.6rem;
+  color: var(--ink-soft);
+}
+.sh-rep ul { gap: .7rem; margin-bottom: 1.6rem; }
+.sh-rep li { max-width: none; font-size: 1.0625rem; line-height: 1.62; padding-left: 1.15rem; }
+.sh-rep li::before { top: .68em; width: 7px; }
+.sh-rep__result { padding-top: 1.35rem; }
+.sh-rep__result p { color: var(--ink); }
+.sh-meta { margin-top: 1.75rem; padding-top: 1.35rem; gap: .75rem; }
+.sh-meta__row { grid-template-columns: 9rem minmax(0, 1fr); }
+.sh-meta dt { font-size: .625rem; }
+.sh-meta dd { font-size: .9375rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-case > .container { transition: none; }
+}
+
+/* The control spans both grid rows so it can travel the project, which
+   means it adds no height to the first row — and with the title block
+   hidden that row collapses to nothing and the control lands on top of
+   the report title. The report clears it instead. */
+@media (min-width: 900px) {
+  /* The clearance belongs to the whole stage, not to the report alone:
+     padding on one column only left the two starting at different heights
+     and still let the control land on the title at 900 and 1024. */
+  /* 3.25rem left the control 3px over the title at 1462 and 6px at 1024 —
+     the control is 42px tall and sits .625rem down. Measured, then set. */
+  .js .sh-case--lead.is-split .sh-stage { padding-top: 3.9rem; }
+}
+
+/* =============================================================
+   sh- ROUND 7 — 16 September 2026. Two tiers, not one.
+
+   THE FEATURED PROJECT AND THE SECONDARY PROJECTS ARE NO LONGER THE
+   SAME COMPONENT. The featured one owns the page: full-width mosaic,
+   a report at reading size, and the only link out to a case study.
+   The secondary ones are **boxes** — one tonal card each, so the eye
+   reads them as separate projects — holding an exact grid of evidence
+   beside a short identity, and opening into the three-column project
+   overview from `Referencias/project overview secundario.png`:
+
+       identity  |  challenge / contribution / result  |  evidence
+
+   Only the featured project has depth beyond the page. Secondary
+   projects carry no case-study link: the open state IS their depth.
+   ============================================================= */
+
+/* ---- The control as a call to action, without shouting over the work.
+        Weight and a gold sign, not a filled button: the evidence stays
+        the loudest thing on the page. The cue runs twice on load and is
+        off entirely under reduced motion. ---- */
+.sh-pill { font-weight: 600; color: var(--ink); border-color: var(--line-strong); }
+.sh-pill .sh-pill__sign { color: var(--accent); }
+.sh-about > .sh-pill, button.sh-pill { animation: shCta 2.4s var(--ease) 2 .8s; }
+@keyframes shCta {
+  0%, 100% { background: var(--paper-alt); border-color: var(--line-strong); }
+  45%      { background: var(--accent-tint); border-color: var(--accent); }
+}
+.sh-case.is-split .sh-pill { animation: none; }
+.sh-case.is-split .sh-pill .sh-pill__sign { color: currentColor; }
+@media (prefers-reduced-motion: reduce) { .sh-about > .sh-pill, button.sh-pill { animation: none; } }
+
+/* ==================================================================
+   sh- ROUND 8 — 20 September 2026. THE OTHER PROJECTS BECOME AN INDEX.
+
+   What changed, and why. The secondary projects were four more CASES:
+   a boxed composition each, one screen tall, with its own evidence
+   grid. That cost the reader four screens of scroll to learn one
+   thing — that the area holds five projects and what they are — and
+   it is what forced the stepping machinery that used to live at the
+   end of this file: a sticky door, a peek, and the featured project
+   REMOVED from the page so it could not be scrolled back to.
+
+   The lock was a symptom. Presenting the other projects at index
+   scale protects the featured project by size alone, so nothing has
+   to be hidden and nothing has to be held.
+
+   THE ROW, left to right: number, title, one line, a strip of
+   evidence, and the control flush right. Four rows on one screen, so
+   the breadth of the area is read in a glance. The number sits on the
+   same left spine as the featured project's own title and evidence,
+   which is the linearity kept.
+
+   OPENING A ROW expands it in place and pushes the rows below down.
+   No overlay, no dimming, no scroll lock, and — unlike the featured
+   project — no breakout to the full screen: a secondary project keeps
+   the site's 1220px measure, because only the featured one is
+   entitled to the whole width. The reader never loses their place and
+   can always scroll in both directions.
+
+   HOW THE TWO STATES ARE KEPT APART, and it is worth knowing before
+   editing any of this: every rule that makes the row a row is scoped
+   to `:not(.is-split)`. Open, those rules simply stop applying and
+   the block styles underneath them — the identity as a block, the
+   evidence as a grid — are what the open project is built from. There
+   is no second set of rules undoing the first.
+   ================================================================== */
+
+.sh-case--sec {
+  --sh-strip: clamp(66px, 7.4vw, 124px);   /* the height of a strip frame */
+  padding-block: clamp(.5rem, 1.15vw, .85rem);
+}
+.sh-case--sec > .container { border-top: 0; padding-top: 0; }
+.sh-case--sec + .sh-case--sec > .container { border-top: 0; padding-top: 0; }
+.sh-more + .sh-cases > .sh-case--sec:first-child > .container { border-top: 0; padding-top: 0; }
+/* the case container is a two-column grid — the rail the featured
+   control sits in, then the content. A row carries its own control
+   inside the box, so the box takes both columns. */
+.sh-case--sec > .container > .sh-box { grid-column: 1 / -1; }
+/* only the featured project is entitled to the whole screen */
+.js .sh-case--sec.is-split > .container { max-width: var(--maxw); }
+/* the entrance cue belongs to the featured project alone: five pills
+   pulsing at once would be noise, and the hierarchy is the point */
+.sh-case--sec .sh-pill { animation: none; }
+
+/* ---- The box, in her own tone. Short when the row is closed, and it
+        deepens and opens out when the project is. ---- */
+.sh-box {
+  background: var(--wm-ivory);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(11, 18, 21, .03), 0 8px 22px rgba(11, 18, 21, .04);
+  padding: clamp(1.05rem, 2vw, 1.5rem);
+  transition: box-shadow .35s var(--ease), border-color .35s var(--ease), padding .4s var(--ease);
+}
+.sh-case--sec.is-split .sh-box {
+  padding: clamp(1.1rem, 2.4vw, 2rem);
+  box-shadow: 0 2px 4px rgba(11, 18, 21, .04), 0 18px 46px rgba(11, 18, 21, .07);
+}
+
+/* ---- The row answers to the pointer anywhere on it, so it reads as
+        one object rather than as a control with decoration. ---- */
+.sh-eg__f img, .sh-eg__f svg { transition: transform .5s var(--ease); }
+@media (hover: hover) {
+  .sh-case--sec:not(.is-split) .sh-box:hover {
+    border-color: var(--line-strong);
+    box-shadow: 0 2px 4px rgba(11, 18, 21, .04), 0 14px 34px rgba(11, 18, 21, .06);
+  }
+  .sh-case--sec:not(.is-split) .sh-box:hover .sh-eg__f img,
+  .sh-case--sec:not(.is-split) .sh-box:hover .sh-eg__f svg { transform: scale(1.045); }
+  .sh-case--sec:not(.is-split) .sh-box:hover .sh-pill {
+    border-color: var(--accent); background: var(--accent-tint);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sh-eg__f img, .sh-eg__f svg { transition: none; }
+  .sh-box { transition: none; }
+}
+
+/* ---- The evidence, open: the grid, captions and all ---- */
+.sh-sec__evh {
+  margin: 0 0 .7rem; font-size: .5625rem; font-weight: 500; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink-faint); display: none;
+}
+.sh-eg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px; }
+.sh-eg__i { margin: 0; }
+.sh-eg__i--span { grid-column: 1 / -1; }
+.sh-eg__f {
+  position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 3;
+  background: var(--paper-alt); border: 1px solid var(--line);
+}
+.sh-eg--3 .sh-eg__i--span .sh-eg__f { aspect-ratio: 16 / 7; }
+.sh-eg__f img, .sh-eg__f svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sh-eg__i--doc .sh-eg__f { background: var(--paper); padding: .4rem; }
+.sh-eg__i--doc .sh-eg__f svg, .sh-eg__i--doc .sh-eg__f img { object-fit: contain; }
+.sh-eg__i .sh-reel__tag { top: 7px; right: 7px; font-size: .5rem; padding: .22rem .4rem; }
+/* Captions belong to the open state: closed, the project's own line
+   does the explaining and the strip stays a clean rectangle. */
+.sh-eg__c { display: none; margin-top: .45rem; }
+.sh-eg__c b { display: block; font-size: .75rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+.sh-eg__c span { display: block; font-size: .6875rem; color: var(--ink-soft); line-height: 1.4; margin-top: .1rem; }
+.js .sh-case--sec.is-split .sh-eg__c { display: block; }
+.js .sh-case--sec.is-split .sh-sec__evh { display: block; }
+.js .sh-case--sec.is-split .sh-eg { gap: clamp(.6rem, 1.2vw, 1rem); }
+
+/* ---- The strip, CLOSED. One height, butted into a single rectangle,
+        and capped at three frames: a fourth pushes the title column
+        under its comfortable measure. It applies at every width — on
+        a phone the row stacks, but it stays a row, not a case. ---- */
+.sh-case--sec:not(.is-split) .sh-eg { display: flex; gap: 3px; }
+.sh-case--sec:not(.is-split) .sh-eg .sh-eg__i:nth-child(n+4) { display: none; }
+.sh-case--sec:not(.is-split) .sh-eg .sh-eg__f {
+  height: var(--sh-strip); width: auto; aspect-ratio: 4 / 3;
+}
+
+/* ---- The identity. This is the OPEN form, and the row rules below
+        reshape it; nothing has to put it back. ---- */
+.sh-sec__n {
+  margin: 0; font-family: var(--font-display); font-weight: 300;
+  font-size: 1.5rem; color: var(--accent); line-height: 1;
+}
+.sh-sec__n::after { content: ""; display: block; width: 26px; height: 1px; background: var(--accent); margin-top: .6rem; }
+.sh-sec__t {
+  margin: 1rem 0 0; font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem); line-height: 1.14; letter-spacing: -.004em;
+}
+.sh-sec__o { margin: .5rem 0 0; font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-faint); }
+.sh-sec__p { margin: .85rem 0 0; font-size: var(--fs-sm); color: var(--ink-soft); line-height: 1.64; max-width: 46ch; }
+.sh-stage--sec > .sh-about, .sh-stage--sec > .sh-pill { margin-top: 1.1rem; }
+
+/* ---- The secondary report is deliberately quieter than the featured one ---- */
+.sh-case--sec .sh-rep p { font-size: var(--fs-sm); line-height: 1.62; margin-bottom: 1.1rem; max-width: 42ch; }
+.sh-case--sec .sh-rep li { font-size: var(--fs-sm); line-height: 1.5; max-width: 42ch; padding-left: 1rem; }
+.sh-case--sec .sh-rep li::before { top: .62em; width: 5px; }
+.sh-case--sec .sh-rep ul { gap: .5rem; margin-bottom: 1.1rem; }
+.sh-case--sec .sh-rep h4 { font-size: .625rem; }
+.sh-case--sec .sh-meta { margin-top: 1.2rem; padding-top: 1rem; gap: .5rem; }
+.sh-case--sec .sh-meta__row { grid-template-columns: 6.5rem minmax(0, 1fr); }
+.sh-case--sec .sh-meta dd { font-size: .8125rem; }
+
+/* The case-study link in the featured report, given the weight of a CTA. */
+.sh-meta__row--cta dd a {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-weight: 500; border-bottom-width: 1px;
+}
+
+/* ==================================================================
+   THE ROW — from 900px, where there is width for one line.
+   Every rule here is scoped to a closed project, so opening one
+   simply releases it back to the block form above.
+   ================================================================== */
+@media (min-width: 900px) {
+  .sh-case--sec:not(.is-split) .sh-stage--sec {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: clamp(1.1rem, 2.4vw, 2rem);
+    row-gap: 0;
+    align-items: center;
+  }
+  .sh-case--sec:not(.is-split) .sh-sec__ev { grid-column: 2; grid-row: 1; justify-self: end; }
+  .sh-case--sec:not(.is-split) .sh-stage--sec > .sh-about,
+  .sh-case--sec:not(.is-split) .sh-stage--sec > .sh-pill {
+    grid-column: 3; grid-row: 1; justify-self: end; margin-top: 0;
+  }
+
+  /* the number leads the line, and the gold rule under it is an
+     open-state mark — in a row it would only add a second horizontal */
+  .sh-case--sec:not(.is-split) .sh-sec__id {
+    grid-column: 1; grid-row: 1;
+    display: grid; grid-template-columns: auto minmax(0, 1fr);
+    column-gap: clamp(.8rem, 1.7vw, 1.3rem); align-items: start;
+  }
+  .sh-case--sec:not(.is-split) .sh-sec__n { grid-column: 1; grid-row: 1 / span 3; font-size: clamp(1.0625rem, 1.5vw, 1.3125rem); }
+  .sh-case--sec:not(.is-split) .sh-sec__n::after { display: none; }
+  .sh-case--sec:not(.is-split) .sh-sec__t { grid-column: 2; grid-row: 1; margin: 0; font-size: clamp(1.0625rem, 1.45vw, 1.3125rem); }
+  .sh-case--sec:not(.is-split) .sh-sec__o { grid-column: 2; grid-row: 2; margin: .3rem 0 0; }
+  .sh-case--sec:not(.is-split) .sh-sec__p { grid-column: 2; grid-row: 3; margin: .35rem 0 0; max-width: 58ch; font-size: .8125rem; line-height: 1.55; }
+
+  .sh-case--sec .sh-pill { font-size: .6875rem; padding: .5rem .8rem; }
+  /* a secondary project carries its control inside its own box, so the
+     featured project's sticky rail does not apply to it */
+  .js .sh-case--sec.is-split .sh-stage { padding-top: 0; }
+
+  /* WITHOUT THE SCRIPT the <details> is never lifted, so an open one
+     has to leave the control column and take the row underneath. */
+  .sh-stage--sec > .sh-about[open] { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; margin-top: 1.1rem; }
+}
+
+/* ---- A wide but SHORT laptop — 1366x768 is the case — is the one place
+        where the roomier rhythm costs the four rows their single screen.
+        The strip and the box padding step back there, and only there. ---- */
+@media (min-width: 1200px) and (max-height: 799px) {
+  .sh-case--sec { --sh-strip: clamp(66px, 5.6vw, 88px); padding-block: clamp(.4rem, .85vw, .6rem); }
+  .sh-case--sec:not(.is-split) .sh-box { padding: clamp(.9rem, 1.6vw, 1.15rem); }
+}
+
+/* ==================================================================
+   THE OPEN STATE — identity · report · evidence, the order she
+   approved in round 7, unchanged. It is what the row expands into.
+   Below 1000px the three simply stack, which the base rules already do.
+   ================================================================== */
+@media (min-width: 1000px) {
+  .js .sh-case--sec.is-split .sh-stage--sec {
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1fr) minmax(0, 1.3fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    row-gap: clamp(.9rem, 1.8vw, 1.35rem);
+    align-items: start;
+  }
+  .js .sh-case--sec.is-split .sh-sec__id { grid-column: 1; grid-row: 1 / span 2; }
+  .js .sh-case--sec.is-split .sh-stage > .sh-panel { grid-column: 2; grid-row: 1 / span 2; }
+  .js .sh-case--sec.is-split .sh-sec__ev { grid-column: 3; grid-row: 2; justify-self: stretch; }
+  .js .sh-case--sec.is-split .sh-stage--sec > .sh-pill { grid-column: 3; grid-row: 1; justify-self: end; margin-top: 0; }
+}
+
+/* ==================================================================
+   "More in this area" — a LABEL, not a control. With the stepping
+   gone and the projects directly under it there is nothing for a
+   click to do, so the anchor is gone and the arrow no longer nudges:
+   an arrow that moves is promising a button.
+   ================================================================== */
+.sh-more__h { font-size: .75rem; display: flex; align-items: center; gap: .5rem; }
+.sh-more__arrow {
+  flex: none; display: inline-flex; color: var(--accent);
+  width: 1.375rem; margin-block: -.5rem;
+}
+.sh-more__arrow svg { width: 100%; height: auto; display: block; }
+
+/* ==================================================================
+   THE END OF THE AREA — the grey band carries the navigation now
+   ------------------------------------------------------------------
+   The onward pair that used to sit above it (Production & Operations
+   ↑ / Work →) is gone. It was saying the same two things this band
+   says, in a block of paper the projects are better off using — which
+   is why the rows above breathe wider than they did.
+
+   `All projects` went with it, and that is a decision rather than a
+   tidy-up: the route to every project belongs to the Work section,
+   with the circles, and having one way in is the point of it.
+   ================================================================== */
+.sh-foot__nav {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: .75rem clamp(1.5rem, 3.5vw, 3rem);
+}
+.sh-foot__go {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-size: var(--fs-sm); color: var(--ink-soft); text-decoration: none;
+  border-bottom: 1px solid var(--line-strong); padding-bottom: 3px;
+  transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+.sh-foot__go:hover, .sh-foot__go:focus-visible { color: var(--ink); border-bottom-color: var(--accent); }
+/* the forward move sits at the far end, which is the direction it points */
+.sh-foot__go--next { margin-left: auto; }
+.sh-foot__a { flex: none; display: inline-flex; color: var(--accent); width: 1.0625rem; }
+.sh-foot__a svg { width: 100%; height: auto; display: block; }
+
+@media (max-width: 599px) {
+  .sh-foot__go--next { margin-left: 0; }
+}
+
+
+/* ==================================================================
+   EVIDENCE AT FULL SIZE — the secondary projects
+   ------------------------------------------------------------------
+   Each evidence frame in a secondary project is a <button>. While the
+   project is closed the button is `disabled`, so the row stays an
+   index: nothing to click, nothing in the tab order. Open, it gains a
+   zoom cursor and a quiet mark in its corner, and it opens the piece
+   over the page at the size it deserves.
+   ================================================================== */
+
+/* the frame is a button now, so it has to be told it is not one */
+.sh-eg__f { padding: 0; font: inherit; color: inherit; text-align: inherit; }
+.sh-eg__f:disabled { opacity: 1; cursor: default; }
+.sh-eg__i--doc .sh-eg__f { padding: .4rem; }
+
+.js .sh-case--sec.is-split .sh-eg__f:not(:disabled) { cursor: zoom-in; }
+/* the mark that says there is more of this to see */
+.js .sh-case--sec.is-split .sh-eg__f:not(:disabled)::after {
+  content: "+";
+  position: absolute; right: .45rem; bottom: .45rem;
+  width: 1.45rem; height: 1.45rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-sans); font-size: .9375rem; font-weight: 400; line-height: 1;
+  color: var(--paper); background: rgba(35, 26, 18, .72);
+  opacity: 0; transition: opacity .3s var(--ease);
+  pointer-events: none;
+}
+.js .sh-case--sec.is-split .sh-eg__f:not(:disabled):hover::after,
+.js .sh-case--sec.is-split .sh-eg__f:not(:disabled):focus-visible::after { opacity: 1; }
+.js .sh-case--sec.is-split .sh-eg__f:not(:disabled):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- The overlay ---- */
+.sh-lb { position: fixed; inset: 0; z-index: 200; display: none; }
+.sh-lb.is-open { display: block; animation: shLbIn .28s var(--ease) both; }
+@keyframes shLbIn { from { opacity: 0; } to { opacity: 1; } }
+
+.sh-lb__scrim {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  border: 0; padding: 0; margin: 0;
+  background: rgba(35, 26, 18, .93);
+  cursor: zoom-out;
+}
+.sh-lb__fig {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(.85rem, 1.8vw, 1.25rem);
+  padding: clamp(3.25rem, 6vw, 4.5rem) clamp(1rem, 7vw, 5.5rem) clamp(3rem, 5vw, 4rem);
+  pointer-events: none;
+}
+.sh-lb__stage { pointer-events: auto; display: flex; align-items: center; justify-content: center; max-width: 100%; min-height: 0; }
+.sh-lb__stage img {
+  display: block; width: auto; height: auto; max-width: min(92vw, 1400px);
+  max-height: calc(100vh - 13rem);
+  max-height: calc(100svh - 13rem);
+  object-fit: contain;
+}
+/* a drawing is not a photograph: it keeps its paper and a sensible cap,
+   or a 320-unit viewBox would stretch across a 1920 screen */
+.sh-lb__stage--doc { background: var(--paper); padding: clamp(.75rem, 1.6vw, 1.25rem); }
+.sh-lb__stage--doc svg {
+  display: block; width: min(86vw, 900px); height: auto;
+  max-height: calc(100vh - 15rem);
+  max-height: calc(100svh - 15rem);
+}
+.sh-lb__cap { pointer-events: auto; max-width: 58ch; text-align: center; }
+.sh-lb__cap b {
+  display: block; font-size: .9375rem; font-weight: 500; line-height: 1.35;
+  color: var(--paper);
+}
+.sh-lb__cap span {
+  display: block; font-size: .8125rem; line-height: 1.5; margin-top: .25rem;
+  color: var(--on-dark-soft);
+}
+.sh-lb__cap:empty, .sh-lb__cap b:empty, .sh-lb__cap span:empty { margin: 0; }
+
+/* ---- Its controls ---- */
+.sh-lb__x, .sh-lb__go {
+  position: absolute; display: flex; align-items: center; justify-content: center;
+  background: none; border: 1px solid rgba(250, 247, 244, .28);
+  color: var(--paper); cursor: pointer; padding: 0;
+  transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+}
+.sh-lb__x:hover, .sh-lb__go:hover,
+.sh-lb__x:focus-visible, .sh-lb__go:focus-visible {
+  border-color: var(--accent); background: rgba(161, 133, 79, .2); color: var(--paper);
+}
+.sh-lb__x { top: clamp(.75rem, 2vw, 1.5rem); right: clamp(.75rem, 2vw, 1.5rem); width: 2.5rem; height: 2.5rem; }
+.sh-lb__go { top: 50%; transform: translateY(-50%); width: 2.5rem; height: 3.25rem; }
+.sh-lb__go--prev { left: clamp(.5rem, 1.6vw, 1.5rem); }
+.sh-lb__go--next { right: clamp(.5rem, 1.6vw, 1.5rem); }
+.sh-lb__x svg, .sh-lb__go svg { width: 1.25rem; height: auto; display: block; }
+.sh-lb__n {
+  position: absolute; left: 0; right: 0; bottom: clamp(.85rem, 2vw, 1.5rem);
+  margin: 0; text-align: center;
+  font-size: .625rem; letter-spacing: .18em; color: var(--on-dark-soft);
+}
+
+@media (max-width: 599px) {
+  .sh-lb__go { top: auto; bottom: clamp(.85rem, 2vw, 1.5rem); transform: none; width: 2.5rem; height: 2.5rem; }
+  .sh-lb__n { bottom: calc(clamp(.85rem, 2vw, 1.5rem) + .85rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-lb.is-open { animation: none; }
+  .js .sh-case--sec.is-split .sh-eg__f:not(:disabled)::after { transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EVIDENCE SEQUENCES, AND THE FULL-SIZE VIEWER ON THE FEATURED MOSAIC
+
+   Some evidence reads as one piece rather than as several: a drawing set
+   held to one standard, a pattern piece by piece, one room after another.
+   Those are shown one image at a time in a single frame, with the same
+   control language the full-size viewer already uses — a back and forward
+   control, a counter, and the arrow keys.
+
+   Nothing here is a new component. The frame, the mat, the caption and the
+   type are the ones the mosaic already had; only the navigation is added,
+   and it is added by script, so with the script off the first image simply
+   stands on its own and nothing is lost.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.sh-shot--seq .sh-shot__frame { position: relative; }
+
+.sh-seq__nav {
+  display: flex; align-items: center; gap: .45rem;
+  margin: .5rem 0 0;
+}
+.sh-seq__go {
+  width: 26px; height: 26px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--line-strong);
+  border-radius: 50%; color: var(--ink); cursor: pointer;
+  transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease);
+}
+.sh-seq__go svg { width: 15px; height: 15px; }
+.sh-seq__go:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sh-seq__go:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sh-seq__n {
+  font-size: .6875rem; letter-spacing: .08em; color: var(--ink-soft);
+  font-variant-numeric: tabular-nums; margin: 0 0 0 .15rem;
+}
+
+/* the frame of a featured evidence cell is a real button once the script
+   runs, so the piece can be opened at full size exactly as in a secondary
+   project. Unlike a secondary row it is never disabled: the featured
+   project's evidence is always on show, so it is always openable. */
+.sh-shot__frame { padding: 0; font: inherit; color: inherit; text-align: inherit; }
+.js button.sh-shot__frame { cursor: zoom-in; }
+.js button.sh-shot__frame::after {
+  content: "+"; position: absolute; top: 10px; right: 10px;
+  width: 22px; height: 22px; line-height: 20px; text-align: center;
+  font-size: .875rem; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--line-strong);
+  opacity: 0; transition: opacity .25s var(--ease); pointer-events: none;
+}
+.js button.sh-shot__frame:hover::after,
+.js button.sh-shot__frame:focus-visible::after { opacity: 1; }
+.js button.sh-shot__frame:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.sh-shot__frame { position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sh-seq__go { transition: none; }
+  .js button.sh-shot__frame::after { transition: none; }
+}
+
+/* A case-study figure holding a document rather than a photograph. The
+   ratio rules above crop to 16:9 or 4:3 with object-fit: cover, which is
+   right for a photograph and wrong for a drawing or a sheet: it would cut
+   the artifact. This lets the document keep its own shape on the mat the
+   frame already provides. Same resolution as the approved .sh-eg__i--doc
+   change — a compatibility variant of an existing component, not a redesign. */
+.figure--doc img,
+.figure-grid .figure--doc img {
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: var(--paper);
+}
+
